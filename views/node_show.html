@@ -1,0 +1,620 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:mudoo>
+
+<head>
+    <link rel="icon" href="/images/node_title.png" type="image/*" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="/javascripts/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery-ui.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.easyui.min.js"></script>
+    <link href="/stylesheets/index_q_a.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/right_div2.css">
+    <link href="/stylesheets/load-an9.css" rel="stylesheet">
+
+    <!--代码高亮-->
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shCore.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushBash.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushCss.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushCSharp.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushJScript.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushPhp.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushPlain.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushPython.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushJava.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushScala.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushSql.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushXml.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushPerl.js"></script>
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter-styles/shCore.css" />
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter-styles/shThemeDefault.css" />
+
+    <!--jquery导航-->
+    <link rel="stylesheet" type="text/css" href="/nav/css/nav.css">
+    <link rel="stylesheet" type="text/css" href="/nav/font/iconfont.css">
+    <script type="text/javascript" src="/nav/js/nav.js"></script>
+    <title>个人笔记</title>
+    <style>
+        .button_base {
+            margin: 0;
+            border: 0;
+            font-size: 18px;
+            position: relative;
+            top: 50%;
+            left: 50%;
+            margin-top: -25px;
+            margin-left: -100px;
+            width: 90px;
+            height: 50px;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-user-select: none;
+            cursor: default;
+        }
+        
+        .button_base:hover {
+            cursor: pointer;
+        }
+        /* ### ### ### 05 */
+        
+        .b05_3d_roll {
+            perspective: 500px;
+            -webkit-perspective: 500px;
+            -moz-perspective: 500px;
+        }
+        
+        .b05_3d_roll div {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            height: 50px;
+            padding: 10px;
+            border: #000000 solid 1px;
+            pointer-events: none;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+        
+        .b05_3d_roll div:nth-child(1) {
+            color: #000000;
+            background-color: #000000;
+            transform: rotateX(90deg);
+            -webkit-transform: rotateX(90deg);
+            -moz-transform: rotateX(90deg);
+            transition: all 0.2s ease;
+            -webkit-transition: all 0.2s ease;
+            -moz-transition: all 0.2s ease;
+            transform-origin: 50% 50% -25px;
+            -webkit-transform-origin: 50% 50% -25px;
+            -moz-transform-origin: 50% 50% -25px;
+        }
+        
+        .b05_3d_roll div:nth-child(2) {
+            color: #000000;
+            background-color: #ffffff;
+            transform: rotateX(0deg);
+            -webkit-transform: rotateX(0deg);
+            -moz-transform: rotateX(0deg);
+            transition: all 0.2s ease;
+            -webkit-transition: all 0.2s ease;
+            -moz-transition: all 0.2s ease;
+            transform-origin: 50% 50% -25px;
+            -webkit-transform-origin: 50% 50% -25px;
+            -moz-transform-origin: 50% 50% -25px;
+        }
+        
+        .b05_3d_roll:hover div:nth-child(1) {
+            color: #ffffff;
+            transition: all 0.2s ease;
+            -webkit-transition: all 0.2s ease;
+            -moz-transition: all 0.2s ease;
+            transform: rotateX(0deg);
+            -webkit-transform: rotateX(0deg);
+            -moz-transform: rotateX(0deg);
+        }
+        
+        .b05_3d_roll:hover div:nth-child(2) {
+            background-color: #000000;
+            transition: all 0.2s ease;
+            -webkit-transition: all 0.2s ease;
+            -moz-transition: all 0.2s ease;
+            transform: rotateX(-90deg);
+            -webkit-transform: rotateX(-90deg);
+            -moz-transform: rotateX(-90deg);
+        }
+        
+        #div_show1 {
+            /*pre自动换行参考http://www.16sucai.com/2010/10/941.html*/
+            /*white-space: pre-wrap;
+            word-wrap: break-word;*/
+            font-weight: bold;
+            font-size: 15px;
+        }
+        
+        #div_show2 {
+            /*font-weight: bold;*/
+            font-size: 14px;
+        }
+    </style>
+    <script>
+        var data_content_length = 50; //分类列表显示正文长度
+        var data_title_length = 15; //分类列表显示标题长度
+    </script>
+    <script>
+        SyntaxHighlighter.defaults['toolbar'] = false; //去掉右上角问号图标
+        SyntaxHighlighter.config.tagName = 'pre'; //可以更改解析的默认Tag。
+        SyntaxHighlighter.config.bloggerMode = true;
+        SyntaxHighlighter.config.stripBrs = true;
+        SyntaxHighlighter.defaults['collapse'] = false;
+        SyntaxHighlighter.defaults['quick-code'] = true;
+        SyntaxHighlighter.all();
+        var catagoryList = [];
+        //初始化分类信息
+        <%for (var i = 0; i <catagoryList.length ; i++) {%>
+        console.log("<%=catagoryList[i].catagory_id%>")
+        catagoryList[<%=i%>] = {
+            catagory_id: "<%=catagoryList[i].catagory_id%>",
+            catagory_id_parent: "<%=catagoryList[i].catagory_id_parent%>",
+            catagory_name: "<%=catagoryList[i].catagory_name%>"
+        };
+        <%}%>
+
+        //递归拼装分类树状图
+        function recursionCatagory(id, upCount) {
+            for (var i = 0; i < catagoryList.length; i++) {
+                if (catagoryList[i].catagory_id_parent == id) {
+                    if (isParentCatagory(catagoryList[i].catagory_id)) {
+                        console.log(catagoryList[i].catagory_name + "父节点" + upCount + "，其父节点为" + id);
+                        var li = document.createElement("li");
+                        var a = document.createElement("a");
+                        var span = document.createElement("span");
+                        var idoc = document.createElement("i");
+                        var ulId = document.createElement("ul");
+                        li.className = "nav-item";
+                        li.style = "text-align:center";
+                        a.style = "margin-left:30px;";
+                        a.href = "javascript:;";
+                        span.innerText = catagoryList[i].catagory_name;
+                        idoc.className = "my-icon nav-more";
+                        ulId.style.display = "none";
+                        ulId.id = catagoryList[i].catagory_id + "ul";
+                        a.appendChild(span);
+                        a.appendChild(idoc);
+                        li.appendChild(a);
+                        li.appendChild(ulId);
+                        document.getElementById(id + "ul").appendChild(li);
+                    } else {
+                        if (document.getElementById(id + "ul") != null) {
+                            var li = document.createElement("li");
+                            var a = document.createElement("a");
+                            var span = document.createElement("span");
+                            li.className = "nav-item";
+                            li.style = "text-align:center;background:dimgrey";
+                            a.style = "margin-left:0px;";
+                            a.href = "javascript:showCatagoryListById('" + catagoryList[i].catagory_id + "')";
+                            span.innerText = catagoryList[i].catagory_name;
+                            a.appendChild(span);
+                            li.appendChild(a);
+                            document.getElementById(id + "ul").appendChild(li);
+                        }
+                        console.log(catagoryList[i].catagory_name + "子节点，其父节点为" + id);
+                    }
+                }
+                if (isParentCatagory(catagoryList[i].catagory_id) && catagoryList[i].catagory_id_parent == id) {
+                    recursionCatagory(catagoryList[i].catagory_id, upCount + 1);
+                }
+            }
+        }
+
+        function isParentCatagory(childId) {
+            for (var j = 0; j < catagoryList.length; j++) {
+                if (catagoryList[j].catagory_id_parent == childId) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <div id="catagory_show" onclick="changeCatagoryShow()" style="background-image:url(/images/catagory.png);position:fixed;z-index:2;width:32px;height:32px;margin-left:16px;"></div>
+    <!--left-->
+    <div class="nav" style="height:auto;">
+        <div class="nav-top">
+            <div id="mini" style="border-bottom:1px solid rgba(255,255,255,.1)"><img src="/nav/images/mini.png"></div>
+        </div>
+        <ul>
+            <li class="nav-item">
+                <a href="javascript:;"><i class="my-icon nav-icon icon_2"></i><span>文章类别</span><i class="my-icon nav-more" ></i></a>
+                <ul id="000000000000000000ul">
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a href="javascript:;"><i class="my-icon nav-icon icon_1"></i><span>网站配置</span><i class="my-icon nav-more"></i></a>
+                <ul>
+                    <li><a href="http://al.wtianyu.com:3060/node/catagoryManage" target="_blank"><span>分类管理</span></a></li>
+                    <li><a href="http://al.wtianyu.com:3010/filelist?path=/home/node%2FPsExpress%2FLog" target="_blank"><span>系统日志</span></a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+    <!--top-->
+    <div class="div_main_code_min" id="div_main_code">
+        <div style="display:inline-block;right:100px;width:240px;position:absolute;top:0px;z-index:2">
+            <embed src="/stylesheets/time.swf" height="65px" align="center" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash">
+        </div>
+        <input type="hidden" id="node_number" value=''>
+        <input type="hidden" id="node_id" value=''>
+        <div>
+            <div onclick="addNode()" style="display:inline-block;left:100px" class="button_base b05_3d_roll">
+                <div>添加</div>
+                <div>添加</div>
+            </div>
+            <div onclick="updateNode()" class="button_base b05_3d_roll" style="display:inline-block;left:195px">
+                <div>修改</div>
+                <div>修改</div>
+            </div>
+            <div id="btn_div_mm" onclick="nextNode()" style="display:inline-block;left:290px" class="button_base b05_3d_roll">
+                <div>下一个</div>
+                <div>下一个</div>
+            </div>
+        </div>
+        <!--right-->
+        <!--笔记详细-->
+        <div id="right_div1">
+            <div class="case" id="timu_case">
+                <!--<a href="javascript:runEffect('div_show1')" class="r">Top</a>-->
+                <div class="title" id="showCatagory"><img class="r" style="cursor:pointer" onclick="runEffect('div_show1',this)" src="/stylesheets/open.png"> 题目
+                </div>
+                <div id="div_show1">唐僧对悟空说
+                </div>
+            </div>
+            <div class="case">
+                <div class="title"><img class="r" style="cursor:pointer" onclick="runEffect('div_show2',this)" src="/stylesheets/open.png">答案</div>
+                <div title="正在加载中，请耐心等候..." class="sk-cube-grid" id="div_loading" style="display:none">
+                    <div class="sk-cube sk-cube1"></div>
+                    <div class="sk-cube sk-cube2"></div>
+                    <div class="sk-cube sk-cube3"></div>
+                    <div class="sk-cube sk-cube4"></div>
+                    <div class="sk-cube sk-cube5"></div>
+                    <div class="sk-cube sk-cube6"></div>
+                    <div class="sk-cube sk-cube7"></div>
+                    <div class="sk-cube sk-cube8"></div>
+                    <div class="sk-cube sk-cube9"></div>
+                </div>
+                <div id="div_show2">悟空你也太调皮了，我跟你说过，叫你不要乱扔东西， 乱扔东西这么做…… （咣当，悟空棍子掉在地上） 你看我还没有说完呢你把棍子又给扔掉了！月光宝盒是宝物，你把他扔掉会污染环境，唉，要是砸到小朋友那怎么办？就算没有砸到小朋友砸到那些花花草草也是不对的呀！
+                </div>
+            </div>
+        </div>
+        <!--笔记列表-->
+        <div id="right_div2" style="position:relative;display:none">
+            <div id="content"></div>
+        </div>
+        <!--隐藏标签不显示，用来将html转换为text-->
+        <div id="right_div3" style="display:none">
+
+        </div>
+        <!--右键菜单栏-->
+        <div id="menu" class="easyui-menu" style="width:150px;display:none">
+            <div onclick="window.location.reload()">刷新</div>
+            <%for(var j=0;j<catagoryList.length;j++){%>
+                <div name="node_menu_div_items">
+                    <span><%=catagoryList[j].catagory_name%></span>
+                    <%var flag = 0;%>
+                        <%for(var i=0;i<nodeList.length;i++){%>
+                            <%if(catagoryList[j].catagory_id==nodeList[i].catagory_id){%>
+                                <%if(flag==0){flag=1;%>
+                                    <div style="width:200px;height:auto">
+                                        <%}%>
+                                            <div name='allNodes' id='<%=nodeList[i].id%>' onclick="showNode('<%=nodeList[i].id%>')">
+                                                <%=nodeList[i].title%>
+                                            </div>
+                                            <%}%>
+                                                <%if(i==nodeList.length-1&&flag==1){%>
+                                    </div>
+                                    <%}%>
+                                        <%}%>
+                </div>
+                <%}%>
+                    <div class="menu-sep"></div>
+                    <div>退出</div>
+        </div>
+    </div>
+    <script>
+        function init() {
+            showNode('<%=node_id%>');
+            $(document).ready(function() {
+                recursionCatagory("000000000000000000", 1);
+                initNav();
+                $("#mini").click();
+                $(".nav").css("margin-top", $(window).height() / 4); //document.getElementById("timu_case").clientHeight
+                $("#catagory_show").css("margin-top", $(window).height() / 4 - 40);
+                $("#catagory_show").css("display", "none");
+            });
+        }
+
+        $("[name=node_menu_div_items]").each(function() {
+            if (this.children.length < 2) {
+                this.remove();
+            }
+        });
+
+        function selectedCatagory(catagory_id) {
+            var img = '<img class="r" style="cursor:pointer" onclick="runEffect(\'div_show1\',this)" src="/stylesheets/open.png">';
+            $("#showCatagory").html(img + "题目");
+            <%for(var k=0;k<catagoryList.length;k++){%>
+            if (catagory_id == "<%=catagoryList[k].catagory_id%>") {
+                $("#showCatagory").html(img + "题目&nbsp:&nbsp<%=catagoryList[k].catagory_name%>");
+            }
+            <%}%>
+        }
+
+        function changeCatagoryShow() {
+            if ($("#right_div1").css("display") == "none") {
+                $("#right_div1").css("display", "");
+                $("#right_div2").css("display", "none");
+                $("#catagory_show").css("background-image", "url('/images/catagory.png')");
+            } else {
+                $("#right_div2").css("display", "");
+                $("#right_div1").css("display", "none");
+                $("#catagory_show").css("background-image", "url('/images/catagory_open.png')");
+            }
+        }
+
+        function selectedNode() {
+            $("[name=allNodes]").each(function() {
+                if (this.id == $("#node_id").val()) { //当前笔记
+                    this.style.background = "#00CCFF";
+                } else {
+                    this.style.background = "";
+                }
+            });
+        }
+
+        $(function() {
+            //绑定右键菜单栏
+            // $(document).bind('contextmenu', function(e) {
+            //     $('#menu').menu('show', {
+            //         left: e.pageX,
+            //         top: e.pageY
+            //     });
+            //     return false;
+            // });
+        });
+
+        function runEffect(divId, imgObj) {
+            // 从中获取特效类型
+            var selectedEffect = "slide";
+
+            // 大多数的特效类型默认不需要传递选项
+            var options = {};
+            // 一些特效带有必需的参数
+            if (selectedEffect === "scale") {
+                options = {
+                    percent: 0
+                };
+            } else if (selectedEffect === "size") {
+                options = {
+                    to: {
+                        width: 200,
+                        height: 60
+                    }
+                };
+            }
+            if ($("#" + divId).css("display") == "block") {
+                imgObj.src = "/stylesheets/close.png"
+            } else {
+                imgObj.src = "/stylesheets/open.png"
+            }
+            // 运行特效
+            $("#" + divId).toggle(selectedEffect, options, 500);
+        };
+
+        function addNode() {
+            window.open("http://al.wtianyu.com:3060/node/add");
+        }
+
+        function updateNode() {
+            if ($("#right_div1").css("display") == "none") {
+                alert("请先选择笔记!!!");
+                return false;
+            }
+            window.open("http://al.wtianyu.com:3060/node/add?nodeId=" + $("#node_id").val());
+        }
+
+        function nextNode() {
+            if ($("#right_div1").css("display") == "none") {
+                alert("请先选择笔记!!!");
+                return false;
+            }
+            var number = $("#node_number").val();
+            if (number != '') {
+                //显示加载动画
+                $("#div_loading").css("display", "");
+                $("#div_show2").html("");
+                $("#div_show1").html("");
+                ajaxSUbmit(number);
+            } else {
+
+                alert("您当前没有笔记!!!");
+            }
+        }
+
+        function showNode(id) {
+            $("#catagory_show").css("display", "");
+            $("#catagory_show").css("background-image", "url('/images/catagory.png')");
+            if (id == '') {
+                return false;
+            } else {
+                //显示加载动画
+                $("#div_loading").css("display", "");
+                $("#div_show2").html("");
+                $("#div_show1").html("");
+            }
+            $.ajax({
+                url: '/node/showNode?id=' + id,
+                type: 'GET',
+                dataType: 'text',
+                success: function(data) {
+                    //关闭加载框
+                    $("#div_loading").css("display", "none");
+                    var data = JSON.parse(data);
+                    if (data.code == 1) {
+                        $("#right_div1").css("display", "");
+                        $("#right_div2").css("display", "none");
+                        document.getElementById("div_show1").innerText = data.content.title;
+                        document.getElementById("div_show2").innerHTML = data.content.content;
+                        $("#node_number").val(data.content.number);
+                        $("#node_id").val(data.content.id);
+                        selectedNode();
+                        selectedCatagory(data.content.catagory_id);
+                        setTimeout(function() { //启动渲染
+                            SyntaxHighlighter.highlight();
+                        }, 0);
+                    } else if (data.code == 0) {
+                        alert("该记录不存在");
+                    } else {
+                        alert("查询异常，请联系管理员!!!");
+                    }
+                },
+                error: function(data) {
+                    //关闭加载框
+                    $("#div_loading").css("display", "none");
+                    alert("服务器繁忙，请稍后再试!!!")
+                }
+            });
+        }
+
+        //查询数据
+        function showCatagoryListById(catagoryId) {
+            //显示加载动画
+            ajaxShowNodeListByCatagoryId(catagoryId);
+        }
+
+        /**根据catagory_id获取笔记列表**/
+        function ajaxShowNodeListByCatagoryId(catagoryIdTemp) {
+            $.ajax({
+                url: '/node/getNodeList?catagoryId=' + catagoryIdTemp,
+                type: 'GET',
+                dataType: 'text',
+                success: function(data) {
+                    var data = JSON.parse(data);
+                    if (data.code == 1) {
+                        $("#content").html("");
+                        $("#right_div1").css("display", "none");
+                        $("#right_div2").css("display", "");
+                        var arrayData = data.content;
+                        for (var j = 0; j < arrayData.length; j++) {
+                            addHtmlForNodeList(j + 1, arrayData[j]);
+                        }
+                        //改变分类图标
+                        $("#catagory_show").css("display", "");
+                        $("#catagory_show").css("background-image", "url('/images/catagory_open.png')");
+                    } else if (data.code == 0) {
+                        alert("该分类下没有内容!!!");
+                    } else {
+                        alert("查询异常，请联系管理员!!!");
+                    }
+                },
+                error: function(data) {
+                    alert("服务器繁忙，请稍后再试!!!")
+                }
+            });
+        }
+
+        //动态添加笔记列表
+        var item_list = 3; //每行4个
+        function addHtmlForNodeList(index_count, data) {
+            var leftpx = "0px";
+            var toppx = "0px";
+            var row_count = parseInt((index_count - 1) / item_list);
+            toppx = 60 + 220 * row_count + "px";
+            if (index_count % item_list == 0) {
+                leftpx = 20 + 340 * 2 + "px";
+            } else if (index_count % item_list == 1) {
+                leftpx = 20 + "px";
+            } else if (index_count % item_list == 2) {
+                leftpx = 20 + 340 * 1 + "px";
+            }
+            var data_title = replaceAllNew(data.title, "<", "&lt;");
+            data_title = replaceAllNew(data_title, ">", "&gt;");
+            right_div3 = data.content;
+            $("#right_div3").html(data.content);
+            var data_content = $("#right_div3").text();;
+            var html_right_div2 = '<article class="bg-stuff" style="position: absolute;height:180px; left: ' + leftpx + '; top: ' + toppx + ';">';
+            html_right_div2 += '<div class="post_icon" style="background-image:url(http://www.wtianyu.com/blog/wp-content/themes/metro-creativex/images/pt_standard.png);"></div>';
+            html_right_div2 += '<div class="post_content" style=" min-height:120px;max-height:140px;">';
+            html_right_div2 += '<a href="javascript:showNode(\'' + data.id + '\')">' + (data_title.length > data_title_length ? data_title.substring(0, data_title_length) + '[…]' : data_title) + '</a>';
+            html_right_div2 += (data_content.length > data_content_length ? data_content.substring(0, data_content_length) + '[…]' : data_content) + ' </div>';
+            html_right_div2 += '<div class="post_content" style="float:right">' + (data.update_date == null ? new Date(data.create_date).format('yyyy-MM-dd hh:mm:ss') : new Date(data.update_date).format('yyyy-MM-dd hh:mm:ss')) + '</div>';
+            html_right_div2 += '</div></article>';
+            $("#content").append(html_right_div2);
+        }
+
+        function replaceAllNew(str, sptr1, sptr2) {
+            return str.replace(new RegExp(sptr1, "g"), sptr2);
+        }
+
+        function ajaxSUbmit(number) {
+            $.ajax({
+                url: '/node/nextNode?number=' + number,
+                type: 'GET',
+                dataType: 'text',
+                success: function(data) {
+                    $("#div_loading").css("display", "none");
+                    var data = JSON.parse(data);
+                    if (data.code == 1) {
+                        document.getElementById("div_show1").innerText = data.content.title;
+                        document.getElementById("div_show2").innerHTML = data.content.content;
+                        $("#node_number").val(data.content.number);
+                        $("#node_id").val(data.content.id);
+                        selectedNode();
+                        selectedCatagory(data.content.catagory_id);
+                        setTimeout(function() { //启动渲染
+                            SyntaxHighlighter.highlight();
+                        }, 0);
+                    } else if (data.code == 0) {
+                        alert("这是最后一条数据!!!");
+                    } else {
+                        alert("查询异常，请联系管理员!!!");
+                    }
+                },
+                error: function(data) {
+                    $("#div_loading").css("display", "none");
+                    alert("服务器繁忙，请稍后再试!!!")
+                }
+            });
+        }
+
+        window.onscroll = function() {
+            //  console.log($(".nav").css("position"));
+        }
+
+        Date.prototype.format = function(format) {
+            var o = {
+                "M+": this.getMonth() + 1, //month
+                "d+": this.getDate(), //day
+                "h+": this.getHours(), //hour
+                "m+": this.getMinutes(), //minute
+                "s+": this.getSeconds(), //second
+                "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+                "S": this.getMilliseconds() //millisecond
+            }
+            if (/(y+)/.test(format)) format = format.replace(RegExp.$1,
+                (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(format))
+                    format = format.replace(RegExp.$1,
+                        RegExp.$1.length == 1 ? o[k] :
+                        ("00" + o[k]).substr(("" + o[k]).length));
+            return format;
+        }
+    </script>
+</body>
+
+</html>

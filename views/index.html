@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"></meta>
+    <script src="/javascripts/jquery-3.2.1.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery-ui.min.js"></script>
+    <script src='/javascripts/anime.js'></script>
+    <script src="/javascripts/index.js"></script>
+    <link rel="stylesheet" href="/stylesheets/div_style.css">
+    <script language="javascript" src="/javascripts/wtiy.js"></script>
+    <link rel="icon" href="/images/node_title.png" type="image/*"/>  
+    <!--jQuery UI可拖拽弹性圆形菜单按钮特效-->
+    <title>主页</title>
+
+    <link rel="stylesheet" href="stylesheets/index_style.css">
+    <link rel="stylesheet" href="stylesheets/div_style_orgin.css">
+    <style>
+        #center_menu {
+            /*设置页面样式不可选中*/
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        img {
+            margin-top: 6px;
+        }
+        
+        .search1 {
+            width: 600px;
+            margin: 50px auto;
+        }
+        
+        .search1_content {
+            width: 580px;
+            height: auto;
+            padding: 10px;
+        }
+        
+        div .txtingput {
+            width: 488px;
+            height: 38px;
+            line-height: 36px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid;
+            font-size: 16px;
+            color: white;
+        }
+        
+        div .txtbutton {
+            width: 104px;
+            height: 40px;
+            font-size: 16px;
+            background: #38f;
+            color: #FFF;
+            line-height: 40px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        /*原始推酷div
+        .showTuiKu {
+            position: absolute;
+            right: 10px;
+            top: 30px;
+            width: 250px;
+            height: 480px;
+            background: #232323;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        
+        .showTuiKu a {
+            color: white;
+            font-size: 16px;
+            margin-top: 50px;
+        }
+        
+        .div_close {
+            width: 16px;
+            height: 16px;
+            background: url(/images/close.png);
+            float: right;
+            cursor: pointer;
+        }
+        
+        .div_close:hover {
+            background-color: white;
+        }*/
+        
+        .bdsug_copy {
+            display: none
+        }
+		.mainlist a{
+			color:mediumpurple
+		}
+    </style>
+    <script>
+        var phoneWidth = parseInt(window.screen.width);
+        var phoneScale = phoneWidth / 640;
+        var ua = navigator.userAgent;
+
+    </script>
+</head>
+
+<body id="body">
+    <script type="text/javascript" color="255,255,255" opacity='0.7' zIndex="-2" count="200" src="http://www.al.wtianyu.com/js/canvas-nest.js"></script>
+ <!--   <script type="text/javascript" size="90" alpha="0.3" zIndex="0" src="http://www.al.wtianyu.com/js/ribbon.js"></script> -->
+    <div class="search1">
+        <input type="text" class="txtingput" style="background:#eee;color:#000" id="txtingput" placeholder="请输入你的问题">
+        <input type="button" class="txtbutton" id="askTulin" value="询问图灵">
+        <div class="search1_content" id="div_tulin_answer"></div>
+    </div>
+
+    <div class="center menu" id="center_menu">
+        <div id="myMenu"></div>
+    </div>
+    <!--<div class="showTuiKu" ondblclick="this.style.display='none';" id="showTuiKu">
+        <div class="div_close" title="单击关闭推酷资讯" onclick="$('.showTuiKu').css('display','none');"></div>
+        <span style='font-size:18px;color:#8DEEEE'>推酷最新资讯：</span><br/>
+    </div>-->
+
+    <div class="showbox" id="showTuiKu" style="overflow:hidden" style="background:#000000">
+        <h2 id="showTuiKuTop">推酷最新资讯：<a class="close" title="单击关闭推酷资讯" href="javascript:void(0)">关闭</a></h2>
+        <div class="mainlist" style="cursor:default;">
+        </div>
+    </div>
+<!--
+	<div class="wy_div_showbox" id="showTuiKu" style="overflow:hidden">
+        <div class="mainlist">
+        </div>
+    </div>
+	-->
+
+    <script>
+        init();
+        $("#askTulin").click(function() {
+            if ($(".txtingput").val().trim() == "") {
+                $(".txtingput").val($(".txtingput").attr("placeholder"));
+            }
+            var data = {};
+            data.info = $(".txtingput").val();
+            $.ajax({ //http://www.tuling123.com/openapi/api
+                async: false, //解决ajax导致window.open()被拦截的问题，但是异步改为同步，请求数据时浏览器会出现卡顿情况
+                url: "/askTuling",
+                type: "POST",
+                dataType: 'text',
+                data: data,
+                success: function(data) {
+                    var jsonData = JSON.parse(data);
+                    console.log(jsonData);
+                    if (jsonData.url != null) { //没有链接
+                        window.open(jsonData.url);
+                    }
+                    $("#div_tulin_answer").html(customColorAndColor(jsonData.text));
+                    $(".txtingput").attr("placeholder", $(".txtingput").val());
+                    $(".txtingput").val("");
+                },
+                error: function(data) {
+                    alert("服务器繁忙，请稍后再试！" + data);
+                }
+            });
+        });
+
+        $(".txtingput").bind("keydown", function(e) {
+            if (e.which == 13) {
+                $("#askTulin").click();
+            }
+        });
+
+        function init() {
+            var menu = new Menu("#myMenu");
+            var item1 = new Item("list");
+            var item2 = new Item("list-1", "#FF5C5C", "item1");
+            var item3 = new Item("list-2", "#5CD1FF", "item2");
+            var item4 = new Item("list-3", "#FFF15C", "item3");
+            var itemArray = [];
+            itemArray[0] = item1;
+            itemArray[1] = item2;
+            itemArray[2] = item3;
+            itemArray[3] = item4;
+            for (var i = 0; i < itemArray.length; i++) {
+                menu.add(itemArray[i]);
+            }
+
+            //设置body的背景颜色
+            $("#body").css("background-color", "#000000"); //getRandomColor(2)
+            //设置img图片和响应事件
+            $(".fi-list").attr("src", "images/index_function.png");
+            $(".fi-list-1").attr("src", "images/collection.png");
+            $(".fi-list-1").click(function() {
+                //打开个人用户笔记
+                window.open("http://al.wtianyu.com:3060/node/index");
+            });
+
+            //设置初始动画效果
+            // $(document).delay(1000).queue(function(next) {
+            //     menu.open(3000);
+            //     next();
+            //     $(document).delay(2000).queue(function(next) {
+            //         menu.close(2000);
+            //         next();
+            //     });
+            // });
+
+            //设置初始动画效果
+            animeInit(itemArray);
+
+            //获取tuiCool最新资讯
+            $.ajax({
+                url: "/getTuiCool",
+                type: "GET",
+                dataType: 'text',
+                data: null,
+                success: function(data) {
+                    $(".mainlist").html($(".mainlist").html() +
+                        data);
+						console.log(data);
+                },
+                error: function(data) {
+                    alert("服务器繁忙，请稍后再试！" + data);
+                }
+            });
+        }
+
+        function animeInit(itemArray) {
+
+            for (var i = 0; i < itemArray.length; i++) {
+                if (i != 0) {
+                    //获取随机位置：left:-400px~400px,top:-200px~200px
+                    itemArray[i].$element.css("left", (Math.round(Math.random() * 800) - 400) + "px");
+                    itemArray[i].$element.css("top", (Math.round(Math.random() * 400) - 200) + "px");
+                }
+            }
+            setTimeout(function() {
+                for (var i = 0; i < itemArray.length; i++) {
+                    if (i != 0) {
+                        //小球运动
+                        anime({
+                            targets: itemArray[i].$element[0],
+                            left: "-560px",
+                            top: "-190px",
+                            duration: 5000,
+                            elasticity: 100
+                        });
+                    }
+                }
+            }, 500);
+        }
+
+        function getRandomColor(type) { //0为所有颜色，1未亮色，2为暗色
+            var c = '#';
+            var cArray;
+            if (type == 0) {
+                cArray = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
+            } else if (type == 1) {
+                cArray = ['A', 'B', 'C', 'D', 'E', 'F'];
+            } else if (type == 2) {
+                cArray = ['0', '1', '2', '3', '4', '5'];
+            }
+            for (var i = 0; i < 6; i++) {
+                var cIndex = Math.round(Math.random() * (cArray.length - 1));
+                c += cArray[cIndex];
+            }
+            return c;
+        }
+
+        function getRandomSize() {
+            var c = '';
+            var cArray = ['2', '3', '4', '5'];
+            c = Math.round(Math.random() * (cArray.length - 1));
+            c = cArray[c] + "px";
+            return c;
+        }
+
+        function customColorAndColor(data) {
+            var customHtml = '';
+            if (data != null) {
+                for (var i = 0; i < data.length; i++) {
+                    var randSize = getRandomSize();
+                    var randColor = getRandomColor(0);
+                    customHtml += `<font style='color:${randColor};' size='${randSize}'>${data[i]}</font>`;
+                }
+            }
+            return customHtml;
+        }
+    </script>
+    <script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/jquery.easyui.min.js">
+    </script>
+    <script>
+        //设置推酷文章拖拽
+		
+		//wyShowDivDialog('showTuiKu',600,400,'插入代码','auto',true,500)
+        $('#showTuiKu').draggable({
+            // proxy: 'clone'
+        });
+ $("#wy_div_close_showboxId").click();
+        var box = 300;
+        var th = 50; //$(window).scrollTop() + $(window).height() / 1.6 - box;
+        var h = document.body.clientHeight;
+        var rw = 50; //$(window).width() / 2 - box;
+        $(".showbox").animate({
+            top: th,
+            opacity: 'show',
+            width: 280,
+            height: 460,
+            right: rw
+        }, 500);
+        $(".showbox h2").css("left", 0);
+        $(".showbox .close").click(function() {
+            $(this).parents(".showbox").animate({
+                top: 0,
+                opacity: 'hide',
+                width: 0,
+                height: 0,
+                right: 0
+            }, 500);
+        });
+    </script>
+</body>
+<!--百度搜索提示http://www.baidu.com/js/opensug.js-->
+<script charset="utf-8" src="http://www.al.wtianyu.com/js/baidu-opensug.js"></script>
+<script>
+
+	$("#showTuiKu").css("background","#000000");
+    BaiduSuggestion.bind("txtingput", {}, function(text) {
+        console.log(text);
+    });
+    //     BaiduSuggestion.bind()的具体形式为：BaiduSuggestion.bind(inputObj|inputId,[params],[confirmCallback]);
+    // 　　　　inputObj|inputId:为需要绑定搜索框提示功能的input对象或input对象的id。
+    // 　　　　params:绑定搜索框提示功能时用到的参数，必须以Json形式给出,例如：
+    // 　　　　{
+    // 　　　　　　“XOffset”:0, //提示框位置横向偏移量,单位px
+    // 　　　　　　“YOffset”:0, //提示框位置纵向偏移量,单位px
+    // 　　　　　　“width”:350, //提示框宽度，单位px
+    // 　　　　　　“fontColor”:”#03c”, //提示框文字颜色
+    // 　　　　　　“fontColorHI”:”#FFF”, //提示框高亮选择时文字颜色
+    // 　　　　　　“fontSize”:”12px”, //文字大小
+    // 　　　　　　“fontFamily”:”宋体”, //文字字体
+    // 　　　　　　“borderColor”:”#03c”, //提示框的边框颜色
+    // 　　　　　　“bgcolorHI”:”#fd0″, //提示框高亮选择的颜色
+    // 　　　　　　“sugSubmit”:false //选中提示框中词条时是否提交表单
+    // 　　　　}
+    // 　　　　confirmCallback(txt):当用户选择提示中具体选项时的回调函数，txt为用户选择的内容。
+    //        .bdsug_copy{display:none}//屏蔽“百度搜索框提示”的文字
+</script>
+
+</html>

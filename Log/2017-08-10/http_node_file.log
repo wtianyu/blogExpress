@@ -1,0 +1,9 @@
+[8/10/2017, 8:55:35 AM] [::ffff:210.13.80.220] [GET] [http://www.cy.wtianyu.com:3060/] [Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0][8/10/2017, 8:55:35 AM] [::ffff:210.13.80.220] [GET] [http://www.cy.wtianyu.com:3060/] [Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0]
+
+[8/10/2017, 9:25:38 AM] [::ffff:210.13.80.220] [GET] [http://www.cy.wtianyu.com:3060/] [Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36]
+[8/10/2017, 9:25:49 AM] [::ffff:210.13.80.220] [POST] [http://www.cy.wtianyu.com:3060/doLogin] [Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36]
+[8/10/2017, 9:25:51 AM] [::ffff:210.13.80.220] [GET] [http://www.cy.wtianyu.com:3060/index] [Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36]
+[8/10/2017, 9:25:51 AM] [::ffff:210.13.80.220] [GET] [http://www.cy.wtianyu.com:3060/getTuiCool] [Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36]
+[8/10/2017, 9:26:02 AM] [::ffff:210.13.80.220] [GET] [http://www.cy.wtianyu.com:3060/index] [Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36]
+[8/10/2017, 9:26:10 AM] [::ffff:210.13.80.220] [GET] [http://www.cy.wtianyu.com:3060/add] [Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36]
+[8/10/2017, 9:26:55 AM] [::ffff:210.13.80.220] [GET] [http://www.cy.wtianyu.com:3060/index] [Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36]

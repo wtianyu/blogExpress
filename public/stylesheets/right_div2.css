@@ -1,0 +1,104 @@
+
+html { font-size: 62.5%; }
+
+
+/* Colors */
+/*#6b2fc0*/
+.bg-stuff { background: #5C5C5C; }
+
+.post_content a{
+	text-decoration: none;
+    color: inherit;
+	cursor: pointer;
+}
+/* Content */
+#content {
+	width: 71%;
+	float: left;
+	display: block;
+	margin-left: 4%;
+	color: #fff;
+}
+#content article {
+	width: 29%;
+	float: left;
+	margin: 0 4% 4% 0;
+	-ms-word-wrap: break-word;
+
+	word-wrap: break-word;
+	padding: 2rem 0 0 0;
+}
+#content article:hover,
+.sticky {
+	box-shadow: 0px 0px 4rem 1rem rgba(0, 0, 0, 0.5);
+}
+#content article .post_icon {
+	width: 27%;
+	height: 9rem;
+	background-repeat: no-repeat;
+	background-position: center 5px;
+	float: left;
+	overflow: hidden;
+}
+#content article .post_content {
+ 	width: 65%;
+ 	height: auto;
+ 	float: left;
+ 	font-family: 'Source Sans Pro', sans-serif;
+ 	text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+ 	color: #fff;
+ 	margin-bottom: 2rem;
+ }
+#content article .post_content a {
+	display: block;
+	font-size: 1.8rem;
+	font-weight: 700;
+	margin-bottom: 1rem;
+}
+#content article .post_content .excerpt {
+	font-size: 1.8rem;
+	font-weight: 300;
+	font-style: italic;
+	margin-bottom: 1rem;
+}
+#content article .post_content .excerpt.format p {
+	font-size: 1.6rem;
+}
+#content article .post_content .excerpt p { color: #fff; }
+#content article .post_content .excerpt.chat_type p {
+	color: #fff;
+	line-height: 3.2rem
+}
+#content article .post_content .excerpt.chat_type p:hover {
+	color: rgba(255, 255, 255, 0.9);
+}
+#content article .post_content .excerpt.chat_type br {
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+	content: "";
+	display: block;
+}
+#content article .post_content .short_excerpt {
+	font-size: 1.4rem;
+	font-weight: 300;
+	font-style: italic;
+	margin-bottom: 1rem;
+}
+#content article .post_content .post_date {
+	font-size: 1.4rem;
+	font-weight: 300;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	filter: alpha(opacity=70);
+	opacity: 0.7;
+}
+#content article .img {
+	width: 100%;
+	height: 19rem;
+	overflow: hidden;
+	margin-top: -2rem;
+	margin-bottom: 1rem;
+	position: relative;
+}
+#content article .img img {
+	width: 100%;
+	position: absolute;
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        相册
+    </title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+        .alldom {
+            width: 100%;
+            height: 100%;
+        }
+        
+        div ul.ul {
+            padding: 0;
+            list-style: none;
+        }
+        
+        div ul li.folder {
+            overflow: hidden;
+            width: 230px;
+            height: 190px;
+            float: left;
+            background: url(/images/album.jpg) center top no-repeat;
+            border: 1px solid #fff;
+            position: relative;
+            transition: all 0.2s ease-in 0.1s;
+        }
+        
+        div ul.ul li a.folder {
+            position: absolute;
+            border-radius: 0px;
+            left: -25px;
+            bottom: 10px;
+            overflow: hidden;
+            width: 230px;
+            height: 24px;
+            color: #595c5f;
+            line-height: 20px;
+            text-align: center;
+            font-size: 18px;
+            z-index: 0;
+            border: none;
+        }
+        
+        div ul.ul li a {
+            width: 230px;
+            height: 40px;
+            line-height: 20px;
+            text-align: center;
+            background: none;
+            border: 1px solid #CCC;
+            border-radius: 8px;
+            transition: all 0.2s ease-in 0.1s;
+            margin-left: 25px;
+        }
+        
+        .btn {
+            display: inline-block;
+            width: 100px;
+            height: 60px;
+            top: 10px;
+            text-align: center;
+            font-size: 16px;
+            line-height: 40px;
+            background: #0e639c;
+            color: #fff;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width:100%;height:80px;background:#BFCDDB;position:relative">
+        <button class="btn">添加相册</button>
+    </div>
+    <!--文件夹显示效果-->
+    <div class="alldom" id="folderDiv">
+        <ul class="ul">
+            <%if(dirnamelist.length==0){ %>
+                111111111111111111
+                <%}else{
+                    for(var i=0; i<= dirnamelist.length-1; i++){%>
+                    <li class="folder" title="<%= dirnamelist[i] %>" onclick="go('<%= dirnamelist[i] %>')" style="cursor: pointer">
+                        <a title="<%= dirnamelist[i] %>" href="javascript:void(0)" class="folder">
+                            <%= dirnamelist[i] %>
+                        </a>
+                    </li>
+                    <%}
+                }%>
+        </ul>
+    </div>
+</body>
+
+</html>

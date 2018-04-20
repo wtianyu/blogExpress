@@ -1,0 +1,664 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:mudoo>
+
+<head>
+    <link rel="icon" href="/images/node_title.png" type="image/*" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="/javascripts/jquery1.8.3.js"></script>
+    <!--<script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>-->
+    <script language="javascript" src="/javascripts/jquery-ui.js"></script>
+    <link href="/stylesheets/index_q_a.css" rel="stylesheet">
+    <script language="javascript" src="/javascripts/jquery.form.js"></script>
+
+    <link rel="stylesheet" href="/stylesheets/div_style.css">
+    <script language="javascript" src="/javascripts/wtiy.js"></script>
+
+    <!--jqueryUI-->
+
+    <link rel='stylesheet' href='/stylesheets/jquery-ui-1.9.2.custom.css' />
+    <script type="text/javascript" src="/javascripts/jquery-ui-1.9.2.custom.min.js"></script>
+
+    <!--ZTREE-->
+    <link rel="stylesheet" href="/stylesheets/zTreeStyle.css" type="text/css">
+
+    <script type="text/javascript" src="/javascripts/jquery.ztree.core.min.js"></script>
+
+    <!--代码高亮-->
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shCore.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushBash.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushCss.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushCSharp.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushJScript.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushPhp.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushPlain.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushPython.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushJava.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushScala.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushSql.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushXml.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushPerl.js"></script>
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter-styles/shCore.css" />
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter-styles/shThemeDefault.css" />
+
+    <script type="text/javascript">
+        var REGX_HTML_ENCODE = /"|&|'|<|>|[\x00-\x20]|[\x7F-\xFF]|[\u0100-\u2700]/g;
+        //代码高亮初始化
+        initSyntaxHighlighter();
+
+        function initSyntaxHighlighter() {
+            SyntaxHighlighter.defaults['toolbar'] = false; //去掉右上角问号图标
+            SyntaxHighlighter.config.tagName = 'pre'; //可以更改解析的默认Tag。
+            SyntaxHighlighter.defaults['gutter'] = false; //是否显示行号
+            SyntaxHighlighter.config.bloggerMode = true;
+            SyntaxHighlighter.config.stripBrs = true;
+            SyntaxHighlighter.defaults['collapse'] = false;
+            SyntaxHighlighter.defaults['quick-code'] = true;
+            SyntaxHighlighter.all();
+        }
+
+        // (function($) {
+        //     $.fn.extend({
+        //         insertAtCaret: function(myValue) {
+        //             var $t = $(this)[0];
+        //             if (document.selection) {
+        //                 $t.focus();
+        //                 sel = document.selection.createRange();
+        //                 sel.text = myValue;
+        //                 $t.focus();
+        //             } else
+        //             if ($t.selectionStart || $t.selectionStart == '0') {
+        //                 var startPos = $t.selectionStart;
+        //                 var endPos = $t.selectionEnd;
+        //                 var scrollTop = $t.scrollTop;
+        //                 $t.value = $t.value.substring(0, startPos) + myValue + $t.value.substring(endPos, $t.value.length);
+        //                 $t.focus();
+        //                 $t.selectionStart = startPos + myValue.length;
+        //                 $t.selectionEnd = startPos + myValue.length;
+        //                 $t.scrollTop = scrollTop;
+        //             } else {
+        //                 $t.innerHTML += myValue;
+        //                 $t.focus();
+        //             }
+        //         }
+        //     })
+        // })(jQuery);
+    </script>
+
+    <title>添加笔记</title>
+    <style>
+        .txtbutton {
+            width: 104px;
+            height: 40px;
+            font-size: 16px;
+            background: #38f;
+            color: #FFF;
+            line-height: 40px;
+            border: none;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        
+        select {
+            width: 120px;
+            font: 12px/24px "宋体";
+            color: #000;
+            height: 26px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 0 5px;
+        }
+        
+        #div_show1 {
+            /*pre自动换行参考http://www.16sucai.com/2010/10/941.html*/
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        
+        #div_show2 {
+            /*font-weight: bold;*/
+            font-size: 14px;
+        }
+    </style>
+</head>
+<script>
+    var catagotyName = ""
+    var catagotyId = ""
+    var dicCatagoryMap = {};
+    var setting = {
+        async: {
+            enable: true,
+            url: "getCatagoryNodes",
+            autoParam: ["id", "name=n", "level=lv", "drag"],
+            otherParam: {
+                "otherParam": "zTreeAsyncTest"
+            },
+            dataFilter: filter
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            onClick: clicTree
+        }
+    };
+
+    function clicTree(event, treeId, treeNode) {
+        targetPath = treeNode.id;
+        if (treeNode.id != "000000000000000000") {
+            catagotyName = treeNode.name;
+            catagotyId = treeNode.id;
+        }
+    }
+
+    function filter(treeId, parentNode, childNodes) {
+        if (!childNodes) return null;
+        for (var i = 0, l = childNodes.length; i < l; i++) {
+            childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
+            dicCatagoryMap[childNodes[i].id] = childNodes[i].name;
+        }
+        init();
+        return childNodes;
+    }
+
+    $(document).ready(function() {
+        $.fn.zTree.init($("#treeDemo"), setting);
+    });
+</script>
+
+<body>
+    <form action="/node/doAdd" method="post" id="addNodeForm">
+        <input type="hidden" id="node_number" value=''>
+        <input type="hidden" id="node_id" name="node_id" value=''>
+        <div class="case" style="margin-top:5px;">
+            <!--<a href="javascript:runEffect('div_show1')" class="r">Top</a>-->
+            <div class="title"><img class="r" style="cursor:pointer" onclick="runEffect('div_show1',this)" src="/stylesheets/open.png">题目 &nbsp;&nbsp;&nbsp;
+                <input type="text" id="node_catagoty_name" name="node_catagoty_name" style="width:100px;" readonly onClick="showCatagoryDiv()" />
+                <input type="hidden" id="node_catagoty" name="node_catagoty" />
+            </div>
+            <div id="div_show1" style="min-width:98%;min-height:70px;border:solid 1px #DBDBDB;" style="width:100%" contenteditable="true"></div>
+            <textarea name="title" id="title" style="width:98%;display:none"></textarea>
+        </div>
+        <div class="case">
+            <div class="title"><img class="r" style="cursor:pointer" onclick="runEffect('div_show2',this)" src="/stylesheets/open.png">答案</div>
+            <div title="正在加载中，请耐心等候..." class="sk-cube-grid" id="div_loading" style="display:none">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>
+            <div id="edit_type" style="height:26px;">
+                <img src='/images/edit_html1.png' title="文本编辑模式" style="cursor:pointer" onclick="editHtml(this)" />
+                <img src='/images/insert_code.png' title="插入代码" style="cursor:pointer" onclick="getRangeFromSelection();wyShowDivDialog('showboxId',600,400,'插入代码','auto',true,500)" />
+            </div>
+            <div id="div_show2" style="min-width:98%;min-height:200px;border:solid 1px #DBDBDB;" oninput="dataChange()" contenteditable="true">
+            </div>
+            <textarea name="textArea_node" id="textArea_node" style="display:none"></textarea>
+            <div style="text-align:center">
+                <input type="button" class="txtbutton" onclick="submitBtn()" value="保存">
+                <input type="button" id="preview" class="txtbutton" onclick="viewNote()" value="预览">
+            </div>
+            <textarea name="content" id="content" style="width:98%;display:none"></textarea>
+        </div>
+    </form>
+    <div class="wy_div_showbox" id="showboxId">
+        <select id="code_type">
+            <option value="java">java</option>
+            <option value="js">javascript</option>
+            <option value="CSS">CSS</option>
+            <option value="html">HTML</option>
+             <option value="xml">XML</option>
+            <option value="sql">sql</option>
+            <option value="c#">C#</option>
+            <option value="c++">C++</option>
+            <option value="PHP">PHP</option>
+        </select><br/>
+        <textarea id="inner_code_txt" style="width:98%;margin-top:10px;height:70%"></textarea>
+        <a class="showdiv" style="margin-top:10px;margin-bottom:5px;" href="javascript:inerttCodeCom()">确定</a>
+    </div>
+
+
+    <!--分类选择-->
+    <div id="catagoryDialog" title="分类选择" class="uploader" style="padding-left: 20px;display: none">
+        <div class="zTreeDemoBackground left">
+            <ul id="treeDemo" class="ztree"></ul>
+        </div>
+    </div>
+    <script>
+        var div_show1_html = "";
+        var div_show1_value = "";
+        var viewNodeflag = true;
+        var showHtml = false; //当前显示的是html还是text
+        var range = null; //光标剪贴板
+        //初始化主要参数
+
+
+        function dataChange() {
+            //console.log($("#div_show2").html());
+            //$("#textArea_node").val($("#div_show2").html());
+        }
+
+
+        function init() {
+            //判断是修改还是新增
+            showNode("<%=nodeId%>");
+            //初始化粘贴剪贴图片
+            getPasteImg();
+            //取消默认浏览器拖拽效果 
+            $(document).on({
+                dragleave: function(e) { //拖离 
+                    e.preventDefault();
+                    console.log("拖离");
+                },
+                drop: function(e) { //拖后放 
+                    e.preventDefault();
+                    console.log("拖后放");
+                },
+                dragenter: function(e) { //拖进 
+                    e.preventDefault();
+                    console.log("拖进 ");
+                },
+                dragover: function(e) { //拖来拖去 
+                    e.preventDefault();
+                    console.log("拖来拖去");
+                }
+            });
+            document.getElementById("div_show2").addEventListener("drop", function(e) {
+                e.preventDefault(); //取消默认浏览器拖拽效果 
+                var fileListDrag = e.dataTransfer.files; //获取文件对象 
+                //检测是否是拖拽文件到页面的操作 
+                if (fileListDrag.length == 0) {
+                    alert("拖拽文件不存在!!!");
+                    return false;
+                } else {
+                    showDragImg(e.dataTransfer.items);
+                }
+            });
+        }
+        //显示图片
+        var imgReader = function(item) {
+            var blob = item.getAsFile(),
+                reader = new FileReader();
+            reader.onload = function(e) {
+                var img = new Image();
+                img.src = e.target.result;
+                document.getElementById('div_show2').appendChild(img);
+            };
+            reader.readAsDataURL(blob);
+        };
+
+        //进入阅览模式
+        function viewNote() {
+            if (showHtml && viewNodeflag) {
+                alert("请在文本模式下进行预览");
+                return;
+            }
+            if (viewNodeflag) {
+                $("#div_show1").attr("contenteditable", false);
+                $("#div_show2").attr("contenteditable", false);
+                viewNodeflag = false;
+                document.getElementById('preview').value = "编辑";
+            } else {
+                $("#div_show2").attr("contenteditable", true);
+                $("#div_show1").attr("contenteditable", true);
+                viewNodeflag = true;
+                document.getElementById('preview').value = "预览";
+            }
+        }
+        //jqueryui的显示隐藏效果
+        function runEffect(divId, imgObj) {
+            // 从中获取特效类型
+            var selectedEffect = "slide";
+
+            // 大多数的特效类型默认不需要传递选项
+            var options = {};
+            // 一些特效带有必需的参数
+            if (selectedEffect === "scale") {
+                options = {
+                    percent: 0
+                };
+            } else if (selectedEffect === "size") {
+                options = {
+                    to: {
+                        width: 200,
+                        height: 60
+                    }
+                };
+            }
+            if ($("#" + divId).css("display") == "block") {
+                imgObj.src = "/stylesheets/close.png"
+            } else {
+                imgObj.src = "/stylesheets/open.png"
+            }
+            // 运行特效
+            $("#" + divId).toggle(selectedEffect, options, 500);
+        };
+
+        //显示拖拽图片
+        function showDragImg(items) {
+            for (var i = 0; i < items.length; i++) {
+                if (items[i] && items[i].kind === 'file' && items[i].type.match(/^image\//i)) {
+                    imgReader(items[i]);
+                } else {
+                    console.log("您拖的不是图片！");
+                }
+            }
+        }
+
+        //图片粘贴初始化
+        function getPasteImg() {
+            document.getElementById('div_show2').addEventListener('paste', function(e) {
+                var clipboardData = e.clipboardData,
+                    i = 0,
+                    items, item, types;
+                if (clipboardData) {
+                    items = clipboardData.items;
+                    if (!items) {
+                        return;
+                    }
+                    item = items[0];
+                    types = clipboardData.types || [];
+                    for (; i < types.length; i++) {
+                        if (types[i] === 'Files') {
+                            item = items[i];
+                            break;
+                        }
+                    }
+                    if (item && item.kind === 'file' && item.type.match(/^image\//i)) {
+                        imgReader(item);
+                    }
+                }
+            });
+        }
+
+        //切换编辑器的文本模式和html模式
+        function editHtml(img) {
+            if (!viewNodeflag) {
+                alert("请在编辑模式下进行操作");
+                return;
+            }
+            if (!showHtml) {
+                var html = document.getElementById('div_show2').innerHTML;
+                document.getElementById('div_show2').innerText = html;
+                img.src = "/images/edit_html2.png";
+                img.title = "html编辑模式";
+            } else {
+                var text = document.getElementById('div_show2').innerText;
+                document.getElementById('div_show2').innerHTML = text;
+                img.src = "/images/edit_html1.png";
+                img.title = "文本编辑模式";
+            }
+            showHtml = !showHtml;
+        }
+
+        //插入代码处理
+        function inerttCodeCom() {
+            var code_type = document.getElementById('code_type').value;
+            var code = document.getElementById('inner_code_txt').value;
+            if (replaceAll(code, " ", "") == "") {
+                document.getElementById('inner_code_txt').value = "";
+                $("#wy_div_close_showboxId").click();
+                return;
+            }
+
+            document.getElementById('inner_code_txt').value = "";
+            // var pre = document.createElement("pre");
+            // pre.className = "brush:" + code_type;
+            code = replaceAll(code, "<", "&lt;");
+            code = replaceAll(code, ">", "&gt;");
+            // pre.innerHTML = code;
+            //var html = "<div name='removePre' title='"+code_type+"'><pre class='brush:" + code_type + "'>" + code + "</pre></div><br/>";
+            //$("#div_show2").append(html);
+            //console.log(html);
+            var divObj1 = document.createElement("div");
+            var divObj2 = document.createElement("div");
+            divObj2.title = code_type;
+            divObj2.className = "removePre"
+            var preObj = document.createElement("pre");
+            preObj.className = "brush:" + code_type;
+            //code = encodeHtml(code);
+            preObj.innerHTML = code;
+            divObj2.appendChild(preObj);
+            divObj1.appendChild(divObj2);
+            insertHtmlAtCaret(divObj1);
+            setTimeout(function() { //启动渲染
+                SyntaxHighlighter.highlight();
+            }, 0);
+            $("#wy_div_close_showboxId").click();
+        }
+
+        function encodeHtml(s) {
+            return (typeof s != "string") ? s :
+                s.replace(REGX_HTML_ENCODE,
+                    function($0) {
+                        var c = $0.charCodeAt(0),
+                            r = ["&#"];
+                        c = (c == 0x20) ? 0xA0 : c;
+                        r.push(c);
+                        r.push(";");
+                        return r.join("");
+                    });
+        }
+
+        /**
+         * 完美实现字符全部替换功能
+         * @param str 原完整字符串
+         * @param sptr1 原字符
+         * @param sptr2 替换字符
+         * @returns {string} 替换后的字符串
+         * 更新时间2017-8-2
+         */
+        function replaceAll(str, sptr1, sptr2) {
+            return str.replace(new RegExp(sptr1, "g"), sptr2);
+        }
+
+        // function replaceAll(str, sptr1, sptr2) {
+        //     var strTemp = "";
+        //     var flag = 0;
+        //     var length = 0;
+        //     var begin = 0;
+        //     if (str.indexOf(sptr1, flag + length) == -1) {
+        //         return str;
+        //     }
+        //     while ((flag = str.indexOf(sptr1, flag)) > -1) {
+        //         strTemp += str.substring(begin, flag) + sptr2;
+        //         length = sptr2.length;
+        //         begin = flag + sptr1.length;
+        //         flag = flag + sptr1.length;
+        //     }
+        //     if (begin != 0) { //进行过截断
+        //         strTemp += str.substring(begin, str.length);
+        //     }
+        //     return strTemp;
+        // }
+
+        //修改模式下显示原内容
+        function showNode(id) {
+            if (id == '') {
+                return false;
+            } else {
+                //显示加载动画
+                $("#div_loading").css("display", "");
+                $("#pre_show2").html("");
+                $("#pre_show1").html("");
+            }
+            $.ajax({
+                url: '/node/showNode?id=' + id,
+                type: 'GET',
+                dataType: 'text',
+                success: function(data) {
+                    //关闭加载框
+                    $("#div_loading").css("display", "none");
+                    var data = JSON.parse(data);
+                    if (data.code == 1) {
+                        document.getElementById("div_show1").innerHTML = data.content.title;
+                        document.getElementById("div_show2").innerHTML = data.content.content;
+                        $("#node_number").val(data.content.number);
+                        $("#node_id").val(data.content.id);
+                        $("#node_catagoty").val(data.content.catagory_id);
+                        $("#node_catagoty_name").val(dicCatagoryMap[data.content.catagory_id]);
+                        SyntaxHighlighter.highlight();
+                    } else if (data.code == 0) {
+                        alert("该记录不存在");
+                    } else {
+                        alert("查询异常，请联系管理员!!!");
+                    }
+                },
+                error: function(data) {
+                    //关闭加载框
+                    $("#div_loading").css("display", "none");
+                    alert("服务器繁忙，请稍后再试!!!")
+                }
+            });
+        }
+
+        //获取div_show2的光标处理器
+        function getRangeFromSelection() {
+            document.getElementById('div_show2').focus();
+            if (window.getSelection) {
+                if (window.getSelection().getRangeAt && window.getSelection().rangeCount) {
+                    range = window.getSelection().getRangeAt(0).cloneRange();
+                }
+            }
+        }
+
+
+        /**
+         *插入代码进光标所在处
+         */
+        function insertHtmlAtCaret(el) {
+            var sel;
+            if (window.getSelection) {
+                if (window.getSelection() != null) {
+                    sel = window.getSelection()
+                }
+                if (range != null) {
+                    range.deleteContents();
+                    //  var el = document.createElement("div");
+                    // el.innerHTML = html;
+                    var frag = document.createDocumentFragment(),
+                        node, lastNode;
+                    while ((node = el.firstChild)) {
+                        lastNode = frag.appendChild(node);
+                    }
+
+                    range.insertNode(frag);
+                    if (lastNode) {
+                        range = range.cloneRange();
+                        range.setStartAfter(lastNode);
+                        range.collapse(true);
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                    }
+                }
+            }
+            // else if (document.selection && document.selection.type != "Control") {
+            //     // IE < 9
+            //     window.getSelection().createRange().pasteHTML(html);
+            // }
+        }
+
+        //提交笔记
+        function submitBtn() {
+
+            var htmlContentMain = $("#div_show2").html();
+            var textContentMain = "";
+            $(".removePre").each(function() {
+                textContentMain = "";
+                $(this).find(".container div").each(function() {
+                    $(this).html($(this).text() + "<br/>");
+                    textContentMain += $(this).text() + "<br/>";
+                });
+                $(this).html("<pre class='brush:" + $(this).attr("title") + "'>" + textContentMain + "</pre>")
+            });
+
+            $("#textArea_node").val($("#div_show2").html());
+            $("#div_show2").html(htmlContentMain);
+            //console.log($("#textArea_node").val()); 
+            //$("#div_show2").html($("#textArea_node").val());
+            // SyntaxHighlighter.highlight();
+            if ($.trim($("#node_catagoty").val()) == "") {
+                alert("请选择笔记分类");
+                $("#node_catagoty").focus();
+                return false;
+            }
+            if ($.trim($("#div_show1").text()) == "") {
+                alert("标题不能为空");
+                $("#div_show1").html();
+                return false;
+            } else {
+                $("#title").val($("#div_show1").text())
+            }
+            if ($.trim($("#textArea_node").val()) == "") {
+                alert("内容不能为空");
+                $("#div_show2").focus();
+                return false;
+            } else {
+                $("#content").val($("#textArea_node").val())
+            }
+            var ajax_option = {
+                dataType: 'html',
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded",
+                success: function(data) {
+                    if (data == "1") {
+                        alert("添加成功!!!");
+                        window.location.href = "http://al.wtianyu.com:3060/node/index";
+                    } else if (data == "0") {
+                        alert("用户未登录!!!");
+                        window.location.href = "http://al.wtianyu.com:3060/index";
+                    } else {
+                        alert("添加失败!!!");
+                    }
+                },
+                error: function(text) {
+                    alert("服务器繁忙，请稍后再试！");
+                }
+            }
+            $("#addNodeForm").ajaxSubmit(ajax_option);
+        }
+
+
+
+
+        function showCatagoryDiv() {
+            catagoryDialog.dialog("open");
+        }
+
+        var catagoryDialog = $("#catagoryDialog").dialog({
+            autoOpen: false,
+            width: 300,
+            height: screen.height / 2,
+            buttons: [{
+                text: "关闭",
+                click: function() {
+                    $(this).dialog("close");
+                }
+            }, {
+                text: "确定",
+                click: function() {
+                    if (catagotyId == "") {
+                        alert("请选择类别");
+                        return false;
+                    }
+                    $("#node_catagoty").val(catagotyId);
+                    $("#node_catagoty_name").val(catagotyName);
+                    catagotyName = "";
+                    catagotyId = "";
+                    $(this).dialog("close");
+                }
+            }]
+        });
+    </script>
+</body>
+
+</html>

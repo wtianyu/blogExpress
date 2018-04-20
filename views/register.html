@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="/javascripts/jquery1.8.3.js"></script>
+    <script src="/javascripts/jquery.form.js"></script>
+    <title>用户注册</title>
+<link rel="icon" href="/images/node_title.png" type="image/*"/>  
+
+    <style>
+        .container {
+            width: 700px;
+            margin: 100px auto;
+        }
+        
+        .container>div {
+            margin-bottom: 6px;
+        }
+        
+        input {
+            display: inline-block;
+            border: 0;
+            padding: 0;
+            margin: 0;
+        }
+        
+        #userName,
+        #psd,
+        #psd1,
+        #phone,
+        #ranks {
+            width: 260px;
+            height: 34px;
+            border: 1px solid #ccc;
+            padding: 0 10px;
+            font-size: 18px;
+            outline: none
+        }
+        
+        .count {
+            height: 16px;
+            line-height: 16px;
+            font-size: 14px;
+            color: #ccc;
+            visibility: hidden;
+            padding-left: 160px;
+        }
+        
+        label {
+            display: inline-block;
+            width: 150px;
+            text-align: right
+        }
+        
+        .btn {
+            display: inline-block;
+            width: 160px;
+            height: 40px;
+            text-align: center;
+            font-size: 16px;
+            line-height: 40px;
+            background: #e4393c;
+            color: #fff;
+            margin-left: 160px;
+        }
+        
+        .btn:hover {
+            cursor: pointer;
+        }
+        
+        .send {
+            width: 70px;
+            height: 40px;
+            text-align: center;
+            font-size: 16px;
+            line-height: 40px;
+            background: #e4393c;
+            color: #fff;
+        }
+        
+        .send1 {
+            height: 26px;
+            text-decoration: none;
+            line-height: 26px;
+            padding: 2px;
+            width: 80px;
+            background: #AA8926;
+            font-family: '宋体';
+            color: #fff;
+            font-size: 12px;
+            text-align: center;
+            display: inline-block;
+            /*float: left;*/
+            border-radius: 2px;
+            margin-left: 2px;
+            -webkit-transition: all 0.2s linear;
+            -moz-transition: all 0.2s linear;
+            -ms-transition: all 0.2s linear;
+            -o-transition: all 0.2s linear;
+            transition: all 0.2s linear;
+        }
+        
+        .send1:hover {
+            text-decoration: none;
+            background: #866c1b;
+            -webkit-transition: all 0.2s linear;
+            -moz-transition: all 0.2s linear;
+            -ms-transition: all 0.2s linear;
+            -o-transition: all 0.2s linear;
+            transition: all 0.2s linear;
+        }
+        
+        .send0 {
+            height: 26px;
+            text-decoration: none;
+            line-height: 26px;
+            padding: 2px;
+            width: 80px;
+            background: #A1A1A1;
+            font-family: '宋体';
+            color: #fff;
+            font-size: 12px;
+            text-align: center;
+            display: inline-block;
+            border-radius: 2px;
+            margin-left: 2px;
+        }
+        
+        .send0:hover {
+            background: #A1A1A1;
+            font-family: '宋体';
+            color: #fff;
+            font-size: 12px;
+            text-decoration: none;
+        }
+        
+        .strong p {
+            margin-left: 158px;
+            font-size: 0;
+        }
+        
+        span.error {
+            height: 26px;
+            line-height: 26px;
+            padding: 2px;
+            width: 100px;
+            color: red;
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 12px;
+            font-family: '宋体';
+            background: url(/images/error.png) no-repeat left center;
+        }
+        
+        .strong p span {
+            display: inline-block;
+            font-weight: normal;
+            font-style: normal;
+            padding: 0;
+            width: 96px;
+            height: 20px;
+            background: #f9d194;
+            font-size: 13px;
+            color: #fff;
+            text-align: center;
+            line-height: 20px;
+            margin-left: -3px;
+        }
+        
+        .strong p span.hover {
+            background: #f97101;
+        }
+        
+        .strong p.active span:nth-child(2) {
+            background: #f97101;
+        }
+        
+        .strong p.active1 span {
+            background: #f97101;
+        }
+        
+        .unmInfo {
+            display: none;
+            font-size: 14px;
+            color: #888;
+        }
+        
+        .warn {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            margin-left: 100px;
+            background: url("/images/warn.png");
+            background-repeat: no-repeat;
+            background-size: 22px 22px;
+            vertical-align: top;
+        }
+        
+        .right {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            background: url("/images/right.png");
+            background-repeat: no-repeat;
+            background-size: 22px 22px;
+            vertical-align: top;
+        }
+        
+        .cuo {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            background: url("/images/cuo.png");
+            background-repeat: no-repeat;
+            background-size: 22px 22px;
+            vertical-align: top;
+        }
+        
+        .psdInfo {
+            display: none;
+            font-size: 14px;
+            color: #888;
+        }
+        
+        .psd1Info {
+            display: none;
+            font-size: 14px;
+            color: #888;
+        }
+        
+        .btn-wrapper {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form action="/doRegister" method="post" id="registerForm">
+            <div class="userName-wrapper">
+                <label for="userName">会员名:</label>
+                <input type="text" placeholder="请输入用户名" id="userName" oninput="checkUserName(this.value);" name="userName">
+                <span class="unmInfo"><i class="warn"></i></span>
+            </div>
+            <div class="count"></div>
+
+            <div class="passWord-wrapper">
+                <label for="psd">登录密码:</label>
+                <input type="password" id="psd" placeholder="请输入密码" name="userPassWd">
+                <span class="psdInfo"></span>
+            </div>
+            <div class="strong" style="display:none" id="strong">
+                <p class="fl">
+                    <span class="hover">弱</span>
+                    <span class="">中</span>
+                    <span class="">强</span>
+                </p>
+            </div>
+            <div class="passWord1-wrapper">
+                <label for="psd1">确认密码:</label>
+                <input type="password" id="psd1" disabled="">
+                <span class="psd1Info"></span>
+            </div>
+            <div class="div-phone" style="display:none">
+                <label for="phone">手机:</label>
+                <input type="text" id="phone" class="infos" placeholder="请输入手机" />
+                <a href="javascript:;" class="send1" onclick="sends.send();">发送验证码</a>
+            </div>
+            <div class="div-ranks" style="display:none">
+                <label for="ranks">验证码:</label>
+                <input type="text" id="ranks" class="infos" placeholder="请输入验证码" />
+            </div>
+            <div class="btn-wrapper">
+                <input type="button" onclick="submitBtn()" class="btn" value="注册">
+            </div>
+        </form>
+    </div>
+    <script>
+        var isCanSubmitName = false;
+        var isCanSubmitPw1 = false;
+        var isCanSubmitPw2 = false;
+
+        var userName = document.getElementById("userName");
+        var psd = document.getElementById("psd");
+        var psd1 = document.getElementById("psd1");
+        var unmInfo = document.getElementsByClassName('unmInfo')[0];
+        var count = document.getElementsByClassName('count')[0];
+        var psdInfo = document.getElementsByClassName('psdInfo')[0];
+        var psd1Info = document.getElementsByClassName('psd1Info')[0];
+        var fl = document.getElementsByClassName("fl")[0];
+        var name_length = 0;
+        var reg = /[^\w\u4e00-\u9fa5]/g;
+        var re_n = /[^\d]/g;
+        var re_t = /[^a-zA-Z]/g
+
+        function checkUserName(userNameTemp) {
+            unmInfo.innerHTML = '';
+            $.ajax({
+                url: "checkUserName?userName=" + userNameTemp,
+                type: "get",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                dataType: 'html',
+                success: function(data) {
+                    if (data == "1") { //用户名已存在
+                        unmInfo.innerHTML = '<i class="cuo"></i>用户名已存在';
+                        isCanSubmitName = false;
+                    } else {
+                        if (reg.test(userName.value)) {
+                            unmInfo.innerHTML = '<i class="cuo"></i>含有非法字符';
+                            isCanSubmitName = false;
+                        } else if (userName.value == "") {
+                            unmInfo.innerHTML = '<i class="cuo"></i>不能为空';
+                            isCanSubmitName = false;
+                        } else if (getLength(userName.value) > 25) {
+                            unmInfo.innerHTML = '<i class="cuo"></i>长度超过25个字符';
+                            isCanSubmitName = false;
+                        } else if (getLength(userName.value) < 6) {
+                            unmInfo.innerHTML = '<i class="cuo"></i>长度少于6个字符';
+                            isCanSubmitName = false;
+                        } else {
+                            unmInfo.innerHTML = '<i class="right"></i>OK!';
+                            isCanSubmitName = true;
+                        }
+                    }
+                },
+                error: function(data) {
+                    console.log("服务器繁忙，请稍后再试！");
+                }
+            });
+        }
+
+        function submitBtn() {
+            if (!isCanSubmitName) {
+                alert("用户名不符合规范");
+                return false;
+            } else if (!isCanSubmitPw1) {
+                alert("密码不符合规范");
+                return false;
+            } else if (!isCanSubmitPw2) {
+                alert("重复输入密码不符合规范");
+                return false;
+            }
+
+            var ajax_option = {
+                dataType: 'html',
+                success: function(data) {
+                    if (data == "-1") {
+                        alert("注册失败!!!");
+                    } else {
+                        alert("注册成功!!!");
+                        window.location.href = "http://al.wtianyu.com:3060/login";
+                    }
+                },
+                error: function(text) {
+                    alert("服务器繁忙，请稍后再试！");
+                }
+            }
+            $("#registerForm").ajaxSubmit(ajax_option);
+        }
+
+        function findStr(str, n) {
+            var temp = 0;
+            for (var i = 0; i < str.length; i++) {
+                if (str.charAt(i) == n) {
+                    temp++;
+                };
+            };
+            return temp;
+        };
+        window.onload = function() {
+
+
+            userName.onfocus = function() {
+                unmInfo.style.display = "inline-block";
+                unmInfo.innerHTML = '<i class="warn"></i> 6-25个字符，一个汉字两个字符，推荐使用中文会员名。'
+            }
+            userName.onkeyup = function() {
+                count.style.visibility = "visible";
+                name_length = getLength(this.value);
+                count.innerHTML = name_length + "个字符";
+                if (name_length == 0) {
+                    count.style.visibility = "hidden";
+                }
+            }
+
+            psd.onfocus = function() {
+                psdInfo.style.display = "inline-block";
+                psdInfo.innerHTML = '<i class="warn"></i> 6-16个字符，请使用字母加数字或者符号，不能单独使用字母 数字或者字符。';
+            }
+            psd.onkeyup = function() {
+                if (this.value.length > 5) {
+                    fl.className = "active";
+                    psd1.removeAttribute("disabled");
+                    psd1Info.style.display = "inline-block";
+                    psd1Info.innerHTML = '<i class="warn"></i> 再输入一次';
+                } else {
+                    fl.className = "";
+                    psd1.setAttribute("disabled", "disabled");
+                    psd1Info.style.display = "none";
+                    psd1.value = "";
+                }
+                if (this.value.length > 10) {
+                    fl.className = "active1";
+                } else {
+                    fl.className = "";
+                    psd1.value = "";
+                }
+
+            }
+            psd.onblur = function() {
+                var m = findStr(this.value, this.value[0]);
+                if (this.value == "") {
+                    psdInfo.innerHTML = '<i class="cuo"></i> 不能为空';
+                    isCanSubmitPw1 = false;
+                } else if (m == this.value.length) {
+                    psdInfo.innerHTML = '<i class="cuo"></i> 不能有相同字符';
+                    isCanSubmitPw1 = false;
+                } else if (this.value.length < 6 || this.value.length > 16) {
+                    psdInfo.innerHTML = '<i class="cuo"></i> 长度应为6-16个字符';
+                    isCanSubmitPw1 = false;
+                } else if (!re_n.test(this.value)) {
+                    psdInfo.innerHTML = '<i class="cuo"></i> 不能全为数字';
+                    isCanSubmitPw1 = false;
+                } else if (!re_t.test(this.value)) {
+                    psdInfo.innerHTML = '<i class="cuo"></i> 不能全为字母';
+                    isCanSubmitPw1 = false;
+                } else {
+                    psdInfo.innerHTML = '<i class="right"></i> OK';
+                    isCanSubmitPw1 = true;
+                }
+            }
+
+            psd.oninput = function() {
+                document.getElementById("strong").style.display = "";
+            }
+
+            psd1.onblur = function() {
+                if (this.value != psd.value) {
+                    psd1Info.innerHTML = '<i class="cuo"></i> 两次输入的密码不一致';
+                    isCanSubmitPw2 = false;
+                } else {
+                    psd1Info.innerHTML = '<i class="right"></i> OK';
+                    isCanSubmitPw2 = true;
+                }
+            }
+        }
+
+        function getLength(str) {
+            return str.replace(/[^\x00-xff]/g, "xx").length;
+        }
+    </script>
+
+
+    <script>
+        var sends = {
+            checked: 1,
+            send: function() {
+                var numbers = /^1\d{10}$/;
+                var val = $('#phone').val().replace(/\s+/g, ""); //获取输入手机号码
+                if ($('.div-phone').find('span').length == 0 && $('.div-phone a').attr('class') == 'send1') {
+                    if (!numbers.test(val) || val.length == 0) {
+                        $('.div-phone').append('<span class="error">手机格式错误</span>');
+                        return false;
+                    }
+                }
+                if (numbers.test(val)) {
+                    var time = 30;
+                    $('.div-phone span').remove();
+
+                    function timeCountDown() {
+                        if (time == 0) {
+                            clearInterval(timer);
+                            $('.div-phone a').addClass('send1').removeClass('send0').html("发送验证码");
+                            sends.checked = 1;
+                            return true;
+                        }
+                        $('.div-phone a').html(time + "s后再次发送");
+                        time--;
+                        return false;
+                        sends.checked = 0;
+                    }
+                    $('.div-phone a').addClass('send0').removeClass('send1');
+                    timeCountDown();
+                    var timer = setInterval(timeCountDown, 1000);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

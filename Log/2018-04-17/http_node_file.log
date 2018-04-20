@@ -1,0 +1,4 @@
+[游客] [4/17/2018, 10:30:17 AM] [::ffff:210.13.80.220] [上海市:上海市] [GET] [http://www.cy.wtianyu.com:3060/] [Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36]
+[wangyu] [4/17/2018, 10:30:28 AM] [::ffff:210.13.80.220] [上海市:上海市] [POST] [http://www.cy.wtianyu.com:3060/doLogin] [Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36]
+[wangyu] [4/17/2018, 10:30:29 AM] [::ffff:210.13.80.220] [上海市:上海市] [GET] [http://www.cy.wtianyu.com:3060/index] [Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36]
+[wangyu] [4/17/2018, 10:30:29 AM] [::ffff:210.13.80.220] [上海市:上海市] [GET] [http://www.cy.wtianyu.com:3060/getTuiCool] [Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36]

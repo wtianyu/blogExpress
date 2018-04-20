@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>拖拽测试</title>
+    <style>
+      body {
+        font-family: arial;
+        background: rgb(242, 244, 246);
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+		padding:50px;
+      }
+
+
+      #elements-container {
+        text-align: center;
+      }
+
+      .drag-list {
+        width: 400px;
+      }
+
+      .drag-list > li {
+        list-style: none;
+        background: rgb(255, 255, 255);
+        border: 1px solid rgb(196, 196, 196);
+        margin: 5px 0;
+        font-size: 24px;
+      }
+
+      .drag-list .title {
+        display: inline-block;
+        width: 130px;
+        padding: 6px 6px 6px 12px;
+        vertical-align: top;
+      }
+
+      .drag-list .drag-area {
+        display: inline-block;
+        background: rgb(158, 211, 179);
+        width: 60px;
+        height: 40px;
+        vertical-align: top;
+        float: right;
+        cursor: move;
+      }
+		
+	#list1 {float: left}
+	#list2 {float: right;}
+    </style>
+  </head>
+
+  <body>
+
+    <section class="showcase showcase-2">
+	<div id="list1">
+      <ul  class="drag-list" >
+        <li data-id="1lalalla" data-groupid="gid-1"><span class="title">list 1</span><span class="drag-area"></span></li>
+        <li data-id="2" data-groupid="gid-1"><span class="title">list 2</span><span class="drag-area"></span></li>
+        <li data-id="3" data-groupid="gid-1"><span class="title">list 3</span><span class="drag-area"></span></li>
+        <li data-id="4" data-groupid="gid-1"><span class="title">list 4</span><span class="drag-area"></span></li>
+        <li data-id="5" data-groupid="gid-1"><span class="title">list 5</span><span class="drag-area"></span></li>
+        <li data-id="6" data-groupid="gid-1"><span class="title">list 6</span><span class="drag-area"></span></li>
+        <li data-id="7" data-groupid="gid-1"><span class="title">list 7</span><span class="drag-area"></span></li>
+      </ul>
+	</div>
+	<div id="list2">
+      <ul id="ul2"  class="drag-list">
+        <li data-id="1" data-groupid="gid-2"><span class="title">list 2</span><span id="sp2" class="drag-area"></span></li>
+      </ul>
+	</div>
+    </section>
+
+
+ <script type="text/javascript" src="/javascripts/jquery-2.1.3.min.js"></script>
+	<script type="text/javascript" src="/javascripts/jquery.dragsort-0.5.2.min.js"></script>
+
+    <script type="text/javascript">
+      $(function() {
+		// $("#list2").css("height",$("#list1")[0].clientHeight+"px");
+	//	 $("#list2").css("line-height",$("#list1")[0].clientHeight+"px");
+		
+		  var option = {dragSelector: 'li',dragEnd:save123,dragBetween: true};
+          $('ul').dragsort(option);
+      });
+	  
+	  
+	  function save123(){
+		var $this = $(this);
+		var data = $this.parent().children().map(function() {
+			return $this.attr("data-id");
+		}).get();
+		console.log($this.attr("data-id"));
+		console.log($this.attr("data-groupid"));
+		
+		
+			 var inputs = $("input[name='sortorder']");
+    var arr = new Array();
+    //构造数据
+    inputs.each(function() {
+        var $this = $(this);
+        arr.push($this.attr("id") + "-" + $this.val());
+    });
+	
+	console.log(arr);
+	  }
+    </script>
+
+  </body>
+</html>

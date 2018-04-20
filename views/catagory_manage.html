@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<HTML>
+
+<HEAD>
+    <TITLE> 分类管理</TITLE>
+     <link rel="icon" href="/images/node_title.png" type="image/*"/>  
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="/stylesheets/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="/javascripts/jquery1.8.3.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.ztree.core.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.ztree.excheck.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.ztree.exedit.min.js"></script>
+    <SCRIPT type="text/javascript">
+        <!--
+        var ifDragDir = true; //是否可以拖拽最外层文件夹到内层
+        var setting = {
+            async: {
+                enable: true,
+                url: "getCatagoryNodes",
+                autoParam: ["id", "name=n", "level=lv", "drag"],
+                otherParam: {
+                    "otherParam": "zTreeAsyncTest"
+                },
+                dataFilter: filter
+            },
+            view: {
+                expandSpeed: "",
+                addHoverDom: addHoverDom,
+                removeHoverDom: removeHoverDom,
+                selectedMulti: false
+            },
+            edit: {
+                drag: {
+                    autoExpandTrigger: true,
+                    prev: dropPrev,
+                    inner: dropInner,
+                    next: dropNext
+                },
+                enable: true,
+                editNameSelectAll: editNameSelectAll,
+                showRemoveBtn: showRemoveBtn,
+                showRenameBtn: showRenameBtn
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                beforeRemove: beforeRemove,
+                beforeRename: beforeRename,
+                beforeDrag: beforeDrag,
+                beforeDrop: beforeDrop,
+                beforeDragOpen: beforeDragOpen,
+                onDrag: onDrag,
+                onDrop: onDrop,
+                onExpand: onExpand
+            }
+        };
+
+        function filter(treeId, parentNode, childNodes) {
+            if (!childNodes) return null;
+            for (var i = 0, l = childNodes.length; i < l; i++) {
+                childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
+            }
+            return childNodes;
+        }
+
+        function beforeRemove(treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            zTree.selectNode(treeNode);
+
+            if (confirm("确认删除 分类 -- " + treeNode.name + "以及该分类所有子类吗？")) {
+                var result = ajaxSUbmit("deleteCatagory?catagory_id=" + treeNode.id);
+                if (result != 1) {
+                    alert("删除失败，请联系管理员");
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function beforeRename(treeId, treeNode, newName) {
+            if (newName.length == 0) {
+                setTimeout(function() {
+                    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                    zTree.cancelEditName();
+                    alert("分类名称不能为空.");
+                }, 0);
+                return false;
+            } else {
+                console.log("更新");
+                var result = ajaxSUbmit("addCatagory?catagory_id=" + treeNode.id + "&catagory_name=" + newName);
+                if (result == 0 || result == -1) {
+                    alert("更新失败");
+                }
+
+            }
+            return true;
+        }
+
+        var newCount = 1;
+
+        function addHoverDom(treeId, treeNode) {
+            var sObj = $("#" + treeNode.tId + "_span");
+            if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+            var addStr = "<span class='button add' id='addBtn_" + treeNode.tId +
+                "' title='添加分类' onfocus='this.blur();'></span>";
+            sObj.after(addStr);
+            //添加
+            var btn = $("#addBtn_" + treeNode.tId);
+            if (btn) btn.bind("click", function() {
+                var result = ajaxSUbmit("addCatagory?catagory_id_parent=" + treeNode.id + "&catagory_name=" + "新分类" + (newCount));
+                if (result != 0 & result != -1) {
+                    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                    zTree.addNodes(treeNode, {
+                        id: result,
+                        pId: treeNode.id,
+                        name: "新分类" + (newCount++)
+                    });
+                } else {
+                    alert("添加失败");
+                }
+                return false;
+            });
+
+            //编辑
+            /*
+            var btn_edit = $("#"+treeNode.tId+"_a");
+            if(btn_edit.attr("class").indexOf("curSelectedNode")>-1){
+            	var btn_edit_span = $("#"+treeNode.tId+"_span");
+            	console.log("更新");
+            	var result = ajaxSUbmit("addCatagory?catagory_id="+treeNode.id+"&catagory_name="+btn_edit_span.text());
+            	if(result!=1){
+            		alert("更新失败");
+            	}
+            }
+            */
+            //删除
+            /*
+            var btn_remove = $("#"+treeNode.tId+"_remove");
+            if (btn_remove) btn_remove.bind("click", function(){
+            	var result = ajaxSUbmit("deleteCatagory?catagory_id="+treeNode.id);
+            	if(result!=1){
+            		alert("删除失败");
+            	}
+            	return false;
+            });
+            */
+        };
+
+        function removeHoverDom(treeId, treeNode) {
+            $("#addBtn_" + treeNode.tId).unbind().remove();
+        };
+
+        function showRemoveBtn(treeId, treeNode) {
+            return treeNode.id == "000000000000000000" ? false : true;
+        }
+
+        function showRenameBtn(treeId, treeNode) {
+            return treeNode.id == "000000000000000000" ? false : true;
+        }
+
+        function editNameSelectAll(treeId, treeNode) {
+            return treeNode.id == "000000000000000000" ? false : true;
+        }
+
+        //拖拽方法
+        function dropPrev(treeId, nodes, targetNode) {
+            if (!ifDragDir) {
+                var pNode = targetNode.getParentNode();
+                if (pNode && pNode.dropInner === false) {
+                    return false;
+                } else {
+                    for (var i = 0, l = curDragNodes.length; i < l; i++) {
+                        var curPNode = curDragNodes[i].getParentNode();
+                        if (curPNode && curPNode !== targetNode.getParentNode() && curPNode.childOuter === false) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        //拖拽方法
+        function dropInner(treeId, nodes, targetNode) {
+            if (!ifDragDir) {
+                if (targetNode && targetNode.dropInner === false) {
+                    return false;
+                } else {
+                    for (var i = 0, l = curDragNodes.length; i < l; i++) {
+                        if (!targetNode && curDragNodes[i].dropRoot === false) {
+                            return false;
+                        } else if (curDragNodes[i].parentTId && curDragNodes[i].getParentNode() !== targetNode && curDragNodes[i].getParentNode().childOuter === false) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        //拖拽方法
+        function dropNext(treeId, nodes, targetNode) {
+            if (!ifDragDir) {
+                var pNode = targetNode.getParentNode();
+                if (pNode && pNode.dropInner === false) {
+                    return false;
+                } else {
+                    for (var i = 0, l = curDragNodes.length; i < l; i++) {
+                        var curPNode = curDragNodes[i].getParentNode();
+                        if (curPNode && curPNode !== targetNode.getParentNode() && curPNode.childOuter === false) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+
+        var log, className = "dark",
+            curDragNodes, autoExpandNode;
+
+        function beforeDrag(treeId, treeNodes) {
+            if (!ifDragDir) {
+                className = (className === "dark" ? "" : "dark");
+                for (var i = 0, l = treeNodes.length; i < l; i++) {
+                    if (treeNodes[i].drag === false) {
+                        curDragNodes = null;
+                        return false;
+                    } else if (treeNodes[i].parentTId && treeNodes[i].getParentNode().childDrag === false) {
+                        curDragNodes = null;
+                        return false;
+                    }
+                }
+                curDragNodes = treeNodes;
+            }
+            return true;
+        }
+
+        function beforeDragOpen(treeId, treeNode) {
+            autoExpandNode = treeNode;
+            return true;
+        }
+
+        /**拖拽节点**/
+        function beforeDrop(treeId, treeNodes, targetNode, moveType, isCopy) {
+            var moveUrl = "moveCatagory?catagory_id_src=" + treeNodes[0].id + "&catagory_id_des=" + targetNode.id;
+            var result = ajaxSUbmit(moveUrl);
+            if (result != 1) {
+                alert("移动失败，请联系管理员");
+            }
+            className = (className === "dark" ? "" : "dark");
+            return true;
+        }
+
+        function onDrag(event, treeId, treeNodes) {
+            className = (className === "dark" ? "" : "dark");
+        }
+
+        function onDrop(event, treeId, treeNodes, targetNode, moveType, isCopy) {
+            className = (className === "dark" ? "" : "dark");
+        }
+
+        function onExpand(event, treeId, treeNode) {
+            if (treeNode === autoExpandNode) {
+                className = (className === "dark" ? "" : "dark");
+            }
+        }
+
+
+
+        $(document).ready(function() {
+            $.fn.zTree.init($("#treeDemo"), setting);
+        });
+
+
+        function ajaxSUbmit(url) {
+            var responseData = ""
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'text',
+                async: false,
+                success: function(data) {
+                    responseData = data;
+                },
+                error: function(data) {
+                    responseData = "服务器繁忙，请稍后再试!!!";
+                }
+            });
+            return responseData;
+        }
+
+
+        function init() {}
+        //-->
+    </SCRIPT>
+    <style type="text/css">
+        .ztree li span.button.add {
+            margin-left: 2px;
+            margin-right: -1px;
+            background-position: -144px 0;
+            vertical-align: top;
+            *vertical-align: middle
+        }
+        
+        body {
+            text-align: center
+        }
+        
+        div {
+            margin: 0 auto;
+            width: 400px;
+            height: 100px;
+        }
+    </style>
+</HEAD>
+
+<BODY onload="init()">
+    <h1>类别管理</h1>
+    <div class="content_wrap">
+        <div class="zTreeDemoBackground left">
+            <ul id="treeDemo" class="ztree"></ul>
+        </div>
+
+    </div>
+</BODY>
+
+</HTML>

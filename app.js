@@ -10,6 +10,8 @@ var users = require('./routes/users');
 var validate = require('./routes/validate');
 var node = require('./routes/node');
 
+var log = require('./moudle/log.js');
+const basePath = "/home/node/PsExpress";
 var app = express();
 
 // view engine setup
@@ -36,7 +38,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 /**拦截器 */
 app.use(function(req, res, next) {
-    console.log("我是一个拦截器,我可以过滤掉一些特殊字符。");
+    saveLog(req);
+    // console.log("我是一个拦截器,我可以过滤掉一些特殊字符。");
     next();
 });
 
@@ -64,5 +67,15 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+
+function saveLog(req) {
+    log.saveLog("www.al.wtianyu.com", 3060, req, basePath + "/Log/" + getDate() + "/", "http_node_file.log");
+}
+
+function getDate() {
+    var date = new Date();
+    var time = date.getFullYear() + "-" + (date.getMonth() < 9 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)) + "-" + (date.getDate() < 10 ? '0' + date.getDate() : date.getDate());
+    return time;
+}
 
 module.exports = app;

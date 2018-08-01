@@ -5,13 +5,21 @@ var router = express.Router();
 const basePath = "/home/node/PsExpress";
 
 /* GET users listing. */
+
+router.get('/search', function(req, res, next) {
+
+    if (!req.session.psUser) {
+        res.render('login');
+    }
+    res.render('search');
+});
 router.get('/index', function(req, res, next) {
-    saveLog(req);
+
     if (!req.session.psUser) {
         res.render('login');
     }
     var node_id = '';
-    mysql.query("select * from ps_node where user_id = ? and valid=1 order by create_date desc;select * from ps_node_catagory where valid= 1 and catagory_user_id = ? order by length(catagory_name)", [req.session.psUser.user_id, req.session.psUser.user_id], function(result) {
+    mysql.query("select id,title,catagory_id from ps_node where user_id = ? and valid=1 order by update_date desc,create_date desc;select * from ps_node_catagory where valid= 1 and catagory_user_id = ? order by length(catagory_name)", [req.session.psUser.user_id, req.session.psUser.user_id], function(result) {
         if (result == -1) { //查询失败
             res.render('node_show', { node_id: node_id, nodeList: [], catagoryList: [] });
         } else { //result==1查询成功
@@ -32,7 +40,7 @@ router.get('/index', function(req, res, next) {
 });
 
 router.get('/add', function(req, res, next) {
-    saveLog(req);
+
     if (!req.session.psUser) {
         res.render('login');
     }
@@ -52,7 +60,7 @@ router.get('/add', function(req, res, next) {
 });
 
 router.get('/catagoryManage', function(req, res, next) {
-    saveLog(req);
+
     if (!req.session.psUser) {
         res.render('login');
     }
@@ -61,7 +69,7 @@ router.get('/catagoryManage', function(req, res, next) {
 
 
 router.get('/addCatagory', function(req, res, next) {
-    saveLog(req);
+
     if (!req.session.psUser) {
         res.render('login'); //用户未登录
     }
@@ -74,8 +82,8 @@ router.get('/addCatagory', function(req, res, next) {
         data = [catagory_id, "9999", catagory_name, req.session.psUser.user_id, catagory_id_parent, new Date(), 1];
         sql = "insert into ps_node_catagory set catagory_id=?,catagory_type=?,catagory_name=?,catagory_user_id=?,catagory_id_parent=?,catagory_create_date=?,valid=?";
     } else {
-        sql = "update ps_node_catagory set catagory_name=?,catagory_update_date=? where catagory_id=?";
-        data = [catagory_name, new Date(), catagory_id];
+        sql = "update ps_node_catagory set catagory_name=?,catagory_update_date=? where catagory_id=? and catagory_user_id=?";
+        data = [catagory_name, new Date(), catagory_id, req.session.psUser.user_id];
     }
     console.log(data);
     console.log(sql);
@@ -91,15 +99,15 @@ router.get('/addCatagory', function(req, res, next) {
 
 
 router.get('/moveCatagory', function(req, res, next) {
-    saveLog(req);
+
     if (!req.session.psUser) {
         res.render('login'); //用户未登录
     }
     try {
         var catagory_id_src = req.query.catagory_id_src;
         var catagory_id_des = req.query.catagory_id_des;
-        sql = "update ps_node_catagory set catagory_id_parent=?,catagory_update_date=? where catagory_id=?";
-        data = [catagory_id_des, new Date(), catagory_id_src];
+        sql = "update ps_node_catagory set catagory_id_parent=?,catagory_update_date=? where catagory_id=? and catagory_user_id = ?";
+        data = [catagory_id_des, new Date(), catagory_id_src, req.session.psUser.user_id];
         console.log(data);
         console.log(sql);
         mysql.execute(sql, data, function(result) {
@@ -117,7 +125,7 @@ router.get('/moveCatagory', function(req, res, next) {
 
 
 router.get('/deleteCatagory', function(req, res, next) {
-    saveLog(req);
+
     if (!req.session.psUser) {
         res.render('login'); //用户未登录
     }
@@ -126,8 +134,8 @@ router.get('/deleteCatagory', function(req, res, next) {
     if (catagory_id == null || catagory_id == "" || catagory_id == "undefined" || catagory_id == undefined) {
         res.end("0");
     } else {
-        sql = "delete  from ps_node_catagory where catagory_id=? or catagory_id_parent = ?";
-        data = [catagory_id, catagory_id];
+        sql = "delete  from ps_node_catagory where (catagory_id=? or catagory_id_parent = ?) and catagory_user_id = ?";
+        data = [catagory_id, catagory_id, req.session.psUser.user_id];
     }
     console.log(catagory_id);
     console.log(sql);
@@ -145,7 +153,7 @@ router.get('/deleteCatagory', function(req, res, next) {
 
 
 router.post('/getCatagoryNodes', function(req, res, next) {
-    saveLog(req);
+
     if (!req.session.psUser) {
         res.render('login');
     }
@@ -173,13 +181,13 @@ router.post('/getCatagoryNodes', function(req, res, next) {
 });
 
 router.get('/nextNode', function(req, res, next) {
-    saveLog(req);
+
     if (!req.session.psUser) {
         res.render('login');
     }
     var jsonRes = {};
     var number = req.query.number;
-    mysql.query("select * from ps_node where user_id = ? and number <? and valid=1  order by create_date desc", [req.session.psUser.user_id, number], function(result) {
+    mysql.query("select * from ps_node where user_id = ? and number <? and valid=1  order by update_date desc,create_date desc limit 0,1", [req.session.psUser.user_id, number], function(result) {
         if (result == -1) { //查询失败
             jsonRes.code = result;
             jsonRes.content = '';
@@ -199,13 +207,13 @@ router.get('/nextNode', function(req, res, next) {
 });
 
 router.get('/showNode', function(req, res, next) {
-    saveLog(req);
+
     if (!req.session.psUser) {
         res.render('login');
     }
     var jsonRes = {};
     var id = req.query.id;
-    mysql.query("select * from ps_node where id = ? and valid=1 ", [id], function(result) {
+    mysql.query("select * from ps_node where id = ? and valid=1 and user_id = ?", [id, req.session.psUser.user_id], function(result) {
         if (result == -1) { //查询失败
             jsonRes.code = result;
             jsonRes.content = '';
@@ -226,13 +234,25 @@ router.get('/showNode', function(req, res, next) {
 
 
 router.get('/getNodeList', function(req, res, next) {
-    saveLog(req);
+
     if (!req.session.psUser) {
         res.render('login');
     }
     var jsonRes = {};
+    var sql = "";
+    var data = [];
     var catagoryId = req.query.catagoryId;
-    mysql.query("select * from ps_node where catagory_Id = ? and valid=1 ", [catagoryId], function(result) {
+    var title = req.query.title;
+    if (title == null) {
+        sql = "select id,title,left(content,2000) content,update_date,create_date,order_import from ps_node where catagory_Id = ? and user_id = ? and valid=1 order by order_import desc,update_date desc,create_date desc";
+        data = [catagoryId, req.session.psUser.user_id];
+    } else {
+        sql = "select id,title,left(content,2000) content,update_date,create_date,order_import from ps_node where title like ? and user_id = ? and valid=1 order by order_import desc,update_date desc,create_date desc";
+        data = ["%" + title + "%", req.session.psUser.user_id];
+    }
+    console.log("catagoryId=" + catagoryId);
+    console.log("title=" + title);
+    mysql.query(sql, data, function(result) {
         if (result == -1) { //查询失败
             jsonRes.code = result;
             jsonRes.content = '';
@@ -252,7 +272,7 @@ router.get('/getNodeList', function(req, res, next) {
 });
 
 router.post('/doAdd', function(req, res, next) {
-    saveLog(req);
+
     if (!req.session.psUser) {
         res.render('login'); //用户未登录
     }
@@ -263,11 +283,11 @@ router.post('/doAdd', function(req, res, next) {
     console.log("nodeId=" + req.body.node_id);
     if (nodeId == "") {
         nodeId = new Date().getTime() + "200" + (parseInt(Math.random() * 89) + 10);
-        data = [nodeId, req.body.title, req.body.content, date, req.session.psUser.user_id, req.body.node_catagoty, 1];
-        sql = "insert into ps_node set id=?,title=?,content=?,create_date=?,user_id=?,catagory_id=?,valid=?";
+        data = [nodeId, req.body.title, req.body.content, date, req.session.psUser.user_id, req.body.node_catagoty, 1, date];
+        sql = "insert into ps_node set id=?,title=?,content=?,create_date=?,user_id=?,catagory_id=?,valid=?,update_date=?";
     } else {
-        sql = "update ps_node set title=?,content=?,catagory_id=?,update_date=? where id=?";
-        data = [req.body.title, req.body.content, req.body.node_catagoty, new Date(), nodeId];
+        sql = "update ps_node set title=?,content=?,catagory_id=?,update_date=? where id=? and user_id=?";
+        data = [req.body.title, req.body.content, req.body.node_catagoty, new Date(), nodeId, req.session.psUser.user_id];
     }
 
     mysql.execute(sql, data, function(result) {

@@ -27,12 +27,12 @@ router.use(session({
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    saveLog(req);
+
     res.render('login');
 });
 
 router.get('/index', function(req, res, next) {
-    saveLog(req);
+
     if (!req.session.psUser) {
         res.render('login');
     }
@@ -40,7 +40,7 @@ router.get('/index', function(req, res, next) {
 });
 
 router.get('/getTuiCool', function(req, res, next) {
-    saveLog(req);
+
     // 执行java代码,获取tuiCool最新资讯
     process.exec_process("java -jar /home/java/JsoupTuiCool.jar ", function() {
         if (process.getShellData().err == null) {
@@ -57,7 +57,7 @@ router.get('/getTuiCool', function(req, res, next) {
  * 图灵机器人
  */
 router.post('/askTuling', function(req, res, next) {
-    saveLog(req);
+
     if (!req.session.psUser) {
         res.render('login');
     }
@@ -113,7 +113,7 @@ router.post('/askTuling', function(req, res, next) {
  * 显示相册页面
  */
 router.get('/index_album', function(req, res, next) {
-    saveLog(req);
+
     if (!req.session.psUser) {
         res.render('login');
     }
@@ -126,7 +126,7 @@ router.get('/index_album', function(req, res, next) {
  * 显示注册页面
  */
 router.get('/register', function(req, res, next) {
-    saveLog(req);
+
     res.render('register');
 });
 
@@ -134,9 +134,9 @@ router.get('/register', function(req, res, next) {
  * 注册处理
  */
 router.post('/doRegister', function(req, res, next) {
-    saveLog(req);
+
     var userId = new Date().getTime() + "100" + (parseInt(Math.random() * 89) + 10);
-    var data = [userId, req.body.userName, "" + req.body.userPassWd];//compile("" + req.body.userPassWd)
+    var data = [userId, req.body.userName, "" + req.body.userPassWd]; //compile("" + req.body.userPassWd)
     mysql.execute("insert into ps_user set user_id=?,user_name=?,user_passwd=?", data, function(result) {
         if (result == -1) {
             res.end(result + "");
@@ -150,7 +150,7 @@ router.post('/doRegister', function(req, res, next) {
  * 检查用户名是否存在
  */
 router.get('/checkUserName', function(req, res, next) {
-    saveLog(req);
+
     mysql.query("select * from ps_user where user_name=?", [req.query.userName], function(result) {
         if (result == -1) { //查询失败
             res.end(result + "");
@@ -168,7 +168,7 @@ router.get('/checkUserName', function(req, res, next) {
  * 处理登录请求
  */
 router.post('/doLogin', function(req, res, next) {
-    saveLog(req);
+
     //compile(req.body.userPassWd)
     mysql.query("select * from ps_user where (user_name=? or user_tel=?) and user_passwd=?", [req.body.userName, req.body.userName, req.body.userPassWd], function(result) {
         if (result == -1) { //查询失败
@@ -193,7 +193,7 @@ router.post('/doLogin', function(req, res, next) {
  * 显示登录页面
  */
 router.get('/login', function(req, res, next) {
-    saveLog(req);
+
     res.render('login');
 });
 

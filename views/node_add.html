@@ -167,6 +167,7 @@
 
     $(document).ready(function() {
         $.fn.zTree.init($("#treeDemo"), setting);
+		//$( "#orderImport" ).buttonset();
     });
 </script>
 
@@ -179,6 +180,11 @@
             <div class="title"><img class="r" style="cursor:pointer" onclick="runEffect('div_show1',this)" src="/stylesheets/open.png">题目 &nbsp;&nbsp;&nbsp;
                 <input type="text" id="node_catagoty_name" name="node_catagoty_name" style="width:100px;" readonly onClick="showCatagoryDiv()" />
                 <input type="hidden" id="node_catagoty" name="node_catagoty" />
+				<!--  <font id="orderImport">
+					<input type="radio" id="radioImport1" name="orderImport"><label for="radioImport1">加精</label>
+					<input type="radio" id="radioImport2" name="orderImport"><label for="radioImport2">沉底</label>
+				  </font>
+				-->
             </div>
             <div id="div_show1" style="min-width:98%;min-height:70px;border:solid 1px #DBDBDB;" style="width:100%" contenteditable="true"></div>
             <textarea name="title" id="title" style="width:98%;display:none"></textarea>
@@ -291,7 +297,11 @@
             reader.onload = function(e) {
                 var img = new Image();
                 img.src = e.target.result;
-                document.getElementById('div_show2').appendChild(img);
+                var divC = document.createElement("div");
+                divC.appendChild(img);
+                getRangeFromSelection();
+                insertHtmlAtCaret(divC); //插入指定光标处
+                // document.getElementById('div_show2').appendChild(img);
             };
             reader.readAsDataURL(blob);
         };
@@ -411,21 +421,14 @@
             }
 
             document.getElementById('inner_code_txt').value = "";
-            // var pre = document.createElement("pre");
-            // pre.className = "brush:" + code_type;
             code = replaceAll(code, "<", "&lt;");
             code = replaceAll(code, ">", "&gt;");
-            // pre.innerHTML = code;
-            //var html = "<div name='removePre' title='"+code_type+"'><pre class='brush:" + code_type + "'>" + code + "</pre></div><br/>";
-            //$("#div_show2").append(html);
-            //console.log(html);
             var divObj1 = document.createElement("div");
             var divObj2 = document.createElement("div");
             divObj2.title = code_type;
             divObj2.className = "removePre"
             var preObj = document.createElement("pre");
             preObj.className = "brush:" + code_type;
-            //code = encodeHtml(code);
             preObj.innerHTML = code;
             divObj2.appendChild(preObj);
             divObj1.appendChild(divObj2);
@@ -461,25 +464,6 @@
             return str.replace(new RegExp(sptr1, "g"), sptr2);
         }
 
-        // function replaceAll(str, sptr1, sptr2) {
-        //     var strTemp = "";
-        //     var flag = 0;
-        //     var length = 0;
-        //     var begin = 0;
-        //     if (str.indexOf(sptr1, flag + length) == -1) {
-        //         return str;
-        //     }
-        //     while ((flag = str.indexOf(sptr1, flag)) > -1) {
-        //         strTemp += str.substring(begin, flag) + sptr2;
-        //         length = sptr2.length;
-        //         begin = flag + sptr1.length;
-        //         flag = flag + sptr1.length;
-        //     }
-        //     if (begin != 0) { //进行过截断
-        //         strTemp += str.substring(begin, str.length);
-        //     }
-        //     return strTemp;
-        // }
 
         //修改模式下显示原内容
         function showNode(id) {
@@ -543,17 +527,14 @@
                 }
                 if (range != null) {
                     range.deleteContents();
-                    //  var el = document.createElement("div");
-                    // el.innerHTML = html;
                     var frag = document.createDocumentFragment(),
                         node, lastNode;
                     while ((node = el.firstChild)) {
                         lastNode = frag.appendChild(node);
                     }
-
                     range.insertNode(frag);
                     if (lastNode) {
-                        range = range.cloneRange();
+                        range = range.cloneRange(); //重点
                         range.setStartAfter(lastNode);
                         range.collapse(true);
                         sel.removeAllRanges();
@@ -569,23 +550,22 @@
 
         //提交笔记
         function submitBtn() {
-
             var htmlContentMain = $("#div_show2").html();
             var textContentMain = "";
+            //对数据进行处理，主要是还原高亮的代码
             $(".removePre").each(function() {
                 textContentMain = "";
                 $(this).find(".container div").each(function() {
-                    $(this).html($(this).text() + "<br/>");
                     textContentMain += $(this).text() + "<br/>";
                 });
+                textContentMain = replaceAll(textContentMain, "<", "&lt;");
+                textContentMain = replaceAll(textContentMain, ">", "&gt;");
                 $(this).html("<pre class='brush:" + $(this).attr("title") + "'>" + textContentMain + "</pre>")
             });
-
+            //处理后的数据传输
             $("#textArea_node").val($("#div_show2").html());
+            //处理前的数据显示
             $("#div_show2").html(htmlContentMain);
-            //console.log($("#textArea_node").val()); 
-            //$("#div_show2").html($("#textArea_node").val());
-            // SyntaxHighlighter.highlight();
             if ($.trim($("#node_catagoty").val()) == "") {
                 alert("请选择笔记分类");
                 $("#node_catagoty").focus();

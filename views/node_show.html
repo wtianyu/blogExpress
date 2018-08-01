@@ -5,13 +5,13 @@
     <link rel="icon" href="/images/node_title.png" type="image/*" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="text/javascript" src="/javascripts/jquery-3.2.1.js"></script>
-    <script type="text/javascript" src="/javascripts/jquery-ui.js"></script>
+    <!--  <script type="text/javascript" src="/javascripts/jquery-ui.js"></script>-->
     <script type="text/javascript" src="/javascripts/jquery.easyui.min.js"></script>
     <link href="/stylesheets/index_q_a.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/stylesheets/easyui.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/right_div2.css">
     <link href="/stylesheets/load-an9.css" rel="stylesheet">
-
+	<meta name="referrer" content="no-referrer" />
     <!--代码高亮-->
     <script type="text/javascript" src="/syntaxhighlighter-scripts/shCore.js"></script>
     <script type="text/javascript" src="/syntaxhighlighter-scripts/shBrushBash.js"></script>
@@ -33,113 +33,15 @@
     <link rel="stylesheet" type="text/css" href="/nav/css/nav.css">
     <link rel="stylesheet" type="text/css" href="/nav/font/iconfont.css">
     <script type="text/javascript" src="/nav/js/nav.js"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/ps_node.css">
+    <link rel="stylesheet" href="/stylesheets/css/font-awesome.min.css">
+
     <title>个人笔记</title>
     <style>
-        .button_base {
-            margin: 0;
-            border: 0;
-            font-size: 18px;
-            position: relative;
-            top: 50%;
-            left: 50%;
-            margin-top: -25px;
-            margin-left: -100px;
-            width: 90px;
-            height: 50px;
-            box-sizing: border-box;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            -webkit-user-select: none;
-            cursor: default;
-        }
-        
-        .button_base:hover {
-            cursor: pointer;
-        }
-        /* ### ### ### 05 */
-        
-        .b05_3d_roll {
-            perspective: 500px;
-            -webkit-perspective: 500px;
-            -moz-perspective: 500px;
-        }
-        
-        .b05_3d_roll div {
-            position: absolute;
-            text-align: center;
-            width: 100%;
-            height: 50px;
-            padding: 10px;
-            border: #000000 solid 1px;
-            pointer-events: none;
-            box-sizing: border-box;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-        }
-        
-        .b05_3d_roll div:nth-child(1) {
-            color: #000000;
-            background-color: #000000;
-            transform: rotateX(90deg);
-            -webkit-transform: rotateX(90deg);
-            -moz-transform: rotateX(90deg);
-            transition: all 0.2s ease;
-            -webkit-transition: all 0.2s ease;
-            -moz-transition: all 0.2s ease;
-            transform-origin: 50% 50% -25px;
-            -webkit-transform-origin: 50% 50% -25px;
-            -moz-transform-origin: 50% 50% -25px;
-        }
-        
-        .b05_3d_roll div:nth-child(2) {
-            color: #000000;
-            background-color: #ffffff;
-            transform: rotateX(0deg);
-            -webkit-transform: rotateX(0deg);
-            -moz-transform: rotateX(0deg);
-            transition: all 0.2s ease;
-            -webkit-transition: all 0.2s ease;
-            -moz-transition: all 0.2s ease;
-            transform-origin: 50% 50% -25px;
-            -webkit-transform-origin: 50% 50% -25px;
-            -moz-transform-origin: 50% 50% -25px;
-        }
-        
-        .b05_3d_roll:hover div:nth-child(1) {
-            color: #ffffff;
-            transition: all 0.2s ease;
-            -webkit-transition: all 0.2s ease;
-            -moz-transition: all 0.2s ease;
-            transform: rotateX(0deg);
-            -webkit-transform: rotateX(0deg);
-            -moz-transform: rotateX(0deg);
-        }
-        
-        .b05_3d_roll:hover div:nth-child(2) {
-            background-color: #000000;
-            transition: all 0.2s ease;
-            -webkit-transition: all 0.2s ease;
-            -moz-transition: all 0.2s ease;
-            transform: rotateX(-90deg);
-            -webkit-transform: rotateX(-90deg);
-            -moz-transform: rotateX(-90deg);
-        }
-        
-        #div_show1 {
-            /*pre自动换行参考http://www.16sucai.com/2010/10/941.html*/
-            /*white-space: pre-wrap;
-            word-wrap: break-word;*/
-            font-weight: bold;
-            font-size: 15px;
-        }
-        
-        #div_show2 {
-            /*font-weight: bold;*/
-            font-size: 14px;
-        }
+
     </style>
     <script>
-        var data_content_length = 50; //分类列表显示正文长度
+        var data_content_length = 58; //分类列表显示正文长度
         var data_title_length = 15; //分类列表显示标题长度
     </script>
     <script>
@@ -153,7 +55,7 @@
         var catagoryList = [];
         //初始化分类信息
         <%for (var i = 0; i <catagoryList.length ; i++) {%>
-        console.log("<%=catagoryList[i].catagory_id%>")
+        //console.log("<%=catagoryList[i].catagory_id%>")
         catagoryList[<%=i%>] = {
             catagory_id: "<%=catagoryList[i].catagory_id%>",
             catagory_id_parent: "<%=catagoryList[i].catagory_id_parent%>",
@@ -166,7 +68,7 @@
             for (var i = 0; i < catagoryList.length; i++) {
                 if (catagoryList[i].catagory_id_parent == id) {
                     if (isParentCatagory(catagoryList[i].catagory_id)) {
-                        console.log(catagoryList[i].catagory_name + "父节点" + upCount + "，其父节点为" + id);
+                        //console.log(catagoryList[i].catagory_name + "父节点" + upCount + "，其父节点为" + id);
                         var li = document.createElement("li");
                         var a = document.createElement("a");
                         var span = document.createElement("span");
@@ -199,7 +101,7 @@
                             li.appendChild(a);
                             document.getElementById(id + "ul").appendChild(li);
                         }
-                        console.log(catagoryList[i].catagory_name + "子节点，其父节点为" + id);
+                        // console.log(catagoryList[i].catagory_name + "子节点，其父节点为" + id);
                     }
                 }
                 if (isParentCatagory(catagoryList[i].catagory_id) && catagoryList[i].catagory_id_parent == id) {
@@ -238,6 +140,7 @@
                 <ul>
                     <li><a href="http://al.wtianyu.com:3060/node/catagoryManage" target="_blank"><span>分类管理</span></a></li>
                     <li><a href="http://al.wtianyu.com:3010/filelist?path=/home/node%2FPsExpress%2FLog" target="_blank"><span>系统日志</span></a></li>
+                    <li><a href="javascript:alert('QQ:554289706 ')"><span>联系我 </span></a></li>
                 </ul>
             </li>
 
@@ -250,6 +153,9 @@
         </div>
         <input type="hidden" id="node_number" value=''>
         <input type="hidden" id="node_id" value=''>
+        <div id="searchId" style="position:absolute; left:500px;top:10px;">
+
+        </div>
         <div>
             <div onclick="addNode()" style="display:inline-block;left:100px" class="button_base b05_3d_roll">
                 <div>添加</div>
@@ -263,7 +169,9 @@
                 <div>下一个</div>
                 <div>下一个</div>
             </div>
+
         </div>
+
         <!--right-->
         <!--笔记详细-->
         <div id="right_div1">
@@ -327,6 +235,7 @@
     </div>
     <script>
         function init() {
+
             showNode('<%=node_id%>');
             $(document).ready(function() {
                 recursionCatagory("000000000000000000", 1);
@@ -335,6 +244,27 @@
                 $(".nav").css("margin-top", $(window).height() / 4); //document.getElementById("timu_case").clientHeight
                 $("#catagory_show").css("margin-top", $(window).height() / 4 - 40);
                 $("#catagory_show").css("display", "none");
+            });
+            $("#searchId").load("search .d7");
+            //自动补充搜索框的datalist
+        }
+        //自动补充搜索框的datalist
+        function autoCompleteDataList(id) {
+            $('#' + id).html("");
+            if (<%=nodeList.length%> > 0) {
+                <%
+                    for(var i=0;i<nodeList.length;i++){
+                %>
+                $('#' + id).append('<option  label="" value="<%=nodeList[i].title.length>20?nodeList[i].title.substring(0,20):nodeList[i].title%>"></option>');
+                <%
+                    }
+                %>
+            }
+
+            $("#search_title").bind("keydown", function(e) {
+                if (e.which == 13) {
+                    ajaxShowNodeListByTitle();
+                }
             });
         }
 
@@ -510,6 +440,40 @@
                         $("#right_div2").css("display", "");
                         var arrayData = data.content;
                         for (var j = 0; j < arrayData.length; j++) {
+							//console.log(arrayData[j].title);
+                            addHtmlForNodeList(j + 1, arrayData[j]);
+                        }
+                        //改变分类图标
+                        $("#catagory_show").css("display", "");
+                        $("#catagory_show").css("background-image", "url('/images/catagory_open.png')");
+                    } else if (data.code == 0) {
+                        alert("该查询无内容!!!");
+                    } else {
+                        alert("查询异常，请联系管理员!!!");
+                    }
+                },
+                error: function(data) {
+                    alert("服务器繁忙，请稍后再试!!!")
+                }
+            });
+        }
+
+
+        /**根据title模糊查询获取笔记列表**/
+        function ajaxShowNodeListByTitle() {
+            var titleTemp = $("#search_title").val();
+            $.ajax({
+                url: '/node/getNodeList?title=' + titleTemp,
+                type: 'GET',
+                dataType: 'text',
+                success: function(data) {
+                    var data = JSON.parse(data);
+                    if (data.code == 1) {
+                        $("#content").html("");
+                        $("#right_div1").css("display", "none");
+                        $("#right_div2").css("display", "");
+                        var arrayData = data.content;
+                        for (var j = 0; j < arrayData.length; j++) {
                             addHtmlForNodeList(j + 1, arrayData[j]);
                         }
                         //改变分类图标
@@ -534,19 +498,25 @@
             var toppx = "0px";
             var row_count = parseInt((index_count - 1) / item_list);
             toppx = 60 + 220 * row_count + "px";
+            var width_off = screen.width / 3 - 350;
+            width_off = width_off > 20 ? width_off : 20;
             if (index_count % item_list == 0) {
-                leftpx = 20 + 340 * 2 + "px";
+                leftpx = width_off * 1.5 + 340 * 2 + "px";
             } else if (index_count % item_list == 1) {
-                leftpx = 20 + "px";
+                leftpx = width_off / 3 + "px";
             } else if (index_count % item_list == 2) {
-                leftpx = 20 + 340 * 1 + "px";
+                leftpx = width_off + 340 * 1 + "px";
             }
             var data_title = replaceAllNew(data.title, "<", "&lt;");
             data_title = replaceAllNew(data_title, ">", "&gt;");
             right_div3 = data.content;
             $("#right_div3").html(data.content);
-            var data_content = $("#right_div3").text();;
-            var html_right_div2 = '<article class="bg-stuff" style="position: absolute;height:180px; left: ' + leftpx + '; top: ' + toppx + ';">';
+            var data_content = $("#right_div3").text();
+            var html_right_div2 = '<article class="bg-stuff" style="position: absolute;margin-left:10px; height:180px; left: ' + leftpx + '; top: ' + toppx + ';">'; 
+            if (data.order_import > 0)
+                html_right_div2 = '<article class="bg-stuff" style="position: absolute;background:purple;margin-left:10px; height:180px; left: ' + leftpx + '; top: ' + toppx + ';">';
+			 if (data.order_import < 0)
+                html_right_div2 = '<article class="bg-stuff" style="position: absolute;background:slategrey;margin-left:10px; height:180px; left: ' + leftpx + '; top: ' + toppx + ';">';
             html_right_div2 += '<div class="post_icon" style="background-image:url(http://www.wtianyu.com/blog/wp-content/themes/metro-creativex/images/pt_standard.png);"></div>';
             html_right_div2 += '<div class="post_content" style=" min-height:120px;max-height:140px;">';
             html_right_div2 += '<a href="javascript:showNode(\'' + data.id + '\')">' + (data_title.length > data_title_length ? data_title.substring(0, data_title_length) + '[…]' : data_title) + '</a>';

@@ -1,0 +1,177 @@
+        .button_base {
+            margin: 0;
+            border: 0;
+            font-size: 18px;
+            position: relative;
+            top: 50%;
+            left: 50%;
+            margin-top: -25px;
+            margin-left: -100px;
+            width: 90px;
+            height: 50px;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-user-select: none;
+            cursor: default;
+        }
+        
+        .button_base:hover {
+            cursor: pointer;
+        }
+        /* ### ### ### 05 */
+        
+        .b05_3d_roll {
+            perspective: 500px;
+            -webkit-perspective: 500px;
+            -moz-perspective: 500px;
+        }
+        
+        .b05_3d_roll div {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            height: 50px;
+            padding: 10px;
+            border: #000000 solid 1px;
+            pointer-events: none;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+        
+        .b05_3d_roll div:nth-child(1) {
+            color: #000000;
+            background-color: #000000;
+            transform: rotateX(90deg);
+            -webkit-transform: rotateX(90deg);
+            -moz-transform: rotateX(90deg);
+            transition: all 0.2s ease;
+            -webkit-transition: all 0.2s ease;
+            -moz-transition: all 0.2s ease;
+            transform-origin: 50% 50% -25px;
+            -webkit-transform-origin: 50% 50% -25px;
+            -moz-transform-origin: 50% 50% -25px;
+        }
+        
+        .b05_3d_roll div:nth-child(2) {
+            color: #000000;
+            background-color: #ffffff;
+            transform: rotateX(0deg);
+            -webkit-transform: rotateX(0deg);
+            -moz-transform: rotateX(0deg);
+            transition: all 0.2s ease;
+            -webkit-transition: all 0.2s ease;
+            -moz-transition: all 0.2s ease;
+            transform-origin: 50% 50% -25px;
+            -webkit-transform-origin: 50% 50% -25px;
+            -moz-transform-origin: 50% 50% -25px;
+        }
+        
+        .b05_3d_roll:hover div:nth-child(1) {
+            color: #ffffff;
+            transition: all 0.2s ease;
+            -webkit-transition: all 0.2s ease;
+            -moz-transition: all 0.2s ease;
+            transform: rotateX(0deg);
+            -webkit-transform: rotateX(0deg);
+            -moz-transform: rotateX(0deg);
+        }
+        
+        .b05_3d_roll:hover div:nth-child(2) {
+            background-color: #000000;
+            transition: all 0.2s ease;
+            -webkit-transition: all 0.2s ease;
+            -moz-transition: all 0.2s ease;
+            transform: rotateX(-90deg);
+            -webkit-transform: rotateX(-90deg);
+            -moz-transform: rotateX(-90deg);
+        }
+        
+        #div_show1 {
+            /*pre自动换行参考http://www.16sucai.com/2010/10/941.html*/
+            /*white-space: pre-wrap;
+            word-wrap: break-word;*/
+            font-weight: bold;
+            font-size: 15px;
+        }
+        
+        #div_show2 {
+            /*font-weight: bold;*/
+            font-size: 14px;
+        }
+
+
+.d6 {background: #B46381;}
+.d6 form {
+  height: 42px;
+}
+.d6 input {
+  height: 100%;
+  width: 0;
+  padding: 0 42px 0 15px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  outline: none;
+  background: transparent;
+  transition: .4s cubic-bezier(0, 0.8, 0, 1);
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+}
+.d6 input:focus {
+  width: 300px;
+  z-index: 1;
+  border-bottom: 2px solid #F9F0DA;
+}
+.d6 button {
+  background: #683B4D;
+  border: none;
+  height: 42px;
+  width: 42px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+}
+.d6 button:before {
+  content: "\f002";
+  font-family: FontAwesome;
+  font-size: 16px;
+  color: #F9F0DA;
+}
+
+.d7 {}
+.d7:after {content:""; clear:both; display:table}
+.d7 div {
+  width: auto;
+  float: right;
+  margin-right: 30px;
+}
+.d7 input {
+  width: 250px;
+  height: 36px;
+  padding-left: 15px;
+  border-radius: 12px;
+  border: 2px solid #324b4e;
+  background: #DEDEDE;
+  outline: none;
+  position: relative;
+  transition: .3s linear;
+}
+
+.d7 button {
+  width: 42px;
+  height: 42px;
+  background: none;
+  border: none;
+  position: absolute;
+  top: 0px;
+  right: 0;
+}
+.d7 button:before{
+  content: "\f002";
+  font-family: FontAwesome;
+  color: #324b4e;
+}
